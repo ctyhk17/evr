@@ -1,0 +1,13 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* tab */
+
+.tab {margin:20px 0 20px 0; padding:0 0 0px 0;border-bottom:1px solid #ccc; clear:both;}
+.tab ul {margin:1px 0 0 0;	padding:0;height:32px;  }
+.tab ul li {float:left;	text-align:center; height:32px; background:#ececec;	border-top:1px solid #ccc;	border-left:1px solid #ccc;	border-right:1px solid #ccc;display:inline;margin-right:-1px;}
+.tab ul a, .tab ul span  {font-size:13px; color:#000;line-height:32px; height:32px;  display:block; padding:0 11px; }
+.tab ul a:hover, .tab ul span:hover {color:#000; background:#ccc; text-decoration:none;}
+.tab ul li.tab_on {text-align:center; color:#000;	 background:#fff;line-height:32px;	height:32px; padding:0 10px;}/*선택된 탭 tab_on*/
+
+.tab ul li.tab_on a:hover {text-align:center; color:#000; background:#fff;	} /* 개발팀 스타일 추가 */

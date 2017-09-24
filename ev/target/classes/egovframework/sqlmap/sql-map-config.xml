@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN" "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	
+	
+	
+	
+	<!-- 공통  -->
+	<sqlMap resource="egovframework/sqlmap/kr/go/ntis/ev/cmn/Common.xml"/>
+	
+	<!-- 과제평가이력정보 검색  -->
+	<sqlMap resource="egovframework/sqlmap/kr/go/ntis/ev/hist/search/PjtFnerSearch.xml"/>
+	
+	<!-- 과제최종평가이력  -->
+	<sqlMap resource="egovframework/sqlmap/kr/go/ntis/ev/hist/pjt/PjtFnerHist.xml"/>
+	
+	<!-- 평가위원 평가참여이력  -->
+	<sqlMap resource="egovframework/sqlmap/kr/go/ntis/ev/hist/asesor/AsesorAssmtPrtcpHist.xml"/>
+	
+	<!-- 과제평가 가감점관리  -->
+	<sqlMap resource="egovframework/sqlmap/kr/go/ntis/ev/mgnt/adsub/PjtFnerAdsubMgnt.xml"/>
+	
+	<!-- 과제평가 로그관리  -->
+	<sqlMap resource="egovframework/sqlmap/kr/go/ntis/ev/mgnt/log/PjtAssmtHistInfoLog.xml"/>
+	
+	<!-- 법령정보  -->
+	<sqlMap resource="egovframework/sqlmap/kr/go/ntis/ev/info/law/AdsubLawInfo.xml"/>
+	
+</sqlMapConfig>

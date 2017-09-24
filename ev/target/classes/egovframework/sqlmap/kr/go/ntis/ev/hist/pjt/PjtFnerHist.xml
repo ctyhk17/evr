@@ -1,0 +1,685 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+
+<sqlMap namespace="kr.go.ntis.ev.hist.pjt.PjtFnerHist">
+
+	<typeAlias  alias="pjtFnerHistVO" type="kr.go.ntis.ev.hist.pjt.service.PjtFnerHistVO"/>
+
+	<!-- 과제최종평가이력 목록을 검색한다. -->
+	<select id="kr.go.ntis.ev.hist.pjt.PjtFnerHist.selectPjtFnerHistList" resultClass="egovMap" parameterClass="pjtFnerHistVO">
+		SELECT
+		      A.RN 
+		    , A.PJT_ID
+		    , A.STAN_YR
+		    , FNC_GET_CMN_CD_NM('GT031', A.DEPT_CD) AS PROG_MSTR_NM
+		    , A.PJT_PRFRM_ORG_NM
+		    , A.KOR_PJT_NM
+		    , A.PJT_FINAL_ASSMT_PTS
+			, A.PJT_FINAL_ASSMT_GRD_DES
+			, A.PJT_STOP_YN			
+		    , FNC_GET_STOP_TYPE_CD_NM(A.SRC_ORG_ID, A.STOP_TYPE_CD) AS STOP_TYPE_NM
+		    , A.MNGR_HM_NM
+		    , A.ABEV_RECOMMEND
+		FROM
+		(
+		    SELECT
+		          ROWNUM AS IDX
+		        , A.RN
+		        , A.PJT_ID
+		        , A.STAN_YR
+		        , A.DEPT_CD
+		        , A.PJT_PRFRM_ORG_NM
+		        , A.KOR_PJT_NM
+		        , A.PJT_FINAL_ASSMT_PTS
+				, A.PJT_FINAL_ASSMT_GRD_DES
+				, A.PJT_STOP_YN
+		        , A.STOP_TYPE_CD
+		        , A.SRC_ORG_ID
+		        , A.MNGR_HM_NM
+		        , A.ABEV_RECOMMEND
+		    FROM
+		    (
+		        SELECT
+		              ROWNUM AS RN
+		            , A.PJT_ID
+		            , A.STAN_YR
+		            , A.DEPT_CD
+		            , A.PJT_PRFRM_ORG_NM
+		            , A.KOR_PJT_NM
+		            , A.PJT_FINAL_ASSMT_PTS
+					, A.PJT_FINAL_ASSMT_GRD_DES
+					, A.PJT_STOP_YN
+		            , A.STOP_TYPE_CD
+		            , A.SRC_ORG_ID
+		            , A.MNGR_HM_NM
+		            ,CASE WHEN  PJT_FINAL_ASSMT_PTS <![CDATA[>=]]>  A.ABEV_START_PTS THEN '가점 후보추천'
+                         WHEN  PJT_FINAL_ASSMT_PTS <![CDATA[<=]]>  A.ABEV_END_PTS THEN '감점 후보추천'
+                     ELSE '' END AS ABEV_RECOMMEND   
+		        FROM
+		        (
+		            SELECT
+		                  B.PJT_ID
+		                , B.STAN_YR
+		                , A.DEPT_CD
+		                , B.PJT_PRFRM_ORG_NM
+		                , B.KOR_PJT_NM
+						, C.PJT_FINAL_ASSMT_PTS
+						, C.PJT_FINAL_ASSMT_GRD_DES
+						, C.PJT_STOP_YN
+		                , C.STOP_TYPE_CD
+		                , C.SRC_ORG_ID
+		                , D.HM_NM AS MNGR_HM_NM
+		                , MAX(E.ABEV_START_PTS) ABEV_START_PTS
+                        , MIN(E.ABEV_END_PTS) ABEV_END_PTS 		                
+		            FROM
+		                GLOBAL.SH_PROG_INFO A,     <!-- 과제_사업정보 -->
+		                GLOBAL.SH_PJT_MAIN B,      <!-- 과제_기본정보 -->
+		                GLOBAL.SH_PJT_FNER C,      <!-- 과제최종평가결과 -->
+		                GLOBAL.SH_PRTCP_MP_INFO D,  <!-- 참여인력정보 -->
+		                TBDEV.TB_FNER_CD E         <!-- 최종평가결과 코드 -->
+		            WHERE
+		                    A.SRC_ORG_ID = B.SRC_ORG_ID     <!-- 출처기관아이디 -->
+		                AND A.BZ_ID      = B.BDGT_PROG_CD   <!-- 사업코드  -->
+		                AND A.STAN_YR    = B.STAN_YR        <!-- 기준년도 -->
+		                AND B.PJT_ID     = C.PJT_ID         <!-- 과제고유번호 -->
+		                AND B.PJT_ID     = D.PJT_ID         <!-- 과제고유번호 -->
+		                AND A.DATA_MODIFY_SLCT != 'D'
+		                AND D.ROLE_SLCT  = 'A'
+		                AND B.OP_CD = 'A'
+		                AND C.OP_CD = 'A'
+		                AND D.OP_CD = 'A'
+		                AND C.PJT_FINAL_ASSMT_GRD_CD = E.PJT_FINAL_ASSMT_GRD_CD    
+		                
+		                <!-- 검색조건 : 대상기간 -->
+		                <isNotEmpty property="searchStanYrFrom">
+                        	<isNotEmpty property="searchStanYrTo">
+                        		AND B.STAN_YR BETWEEN #searchStanYrFrom# AND #searchStanYrTo#
+                        	</isNotEmpty>
+                        	<isEmpty property="searchStanYrTo">
+                        		AND B.STAN_YR <![CDATA[>=]]> #searchStanYrFrom# 
+                        	</isEmpty>
+                        </isNotEmpty>
+                        <isEmpty property="searchStanYrFrom">
+                        	<isNotEmpty property="searchStanYrTo">
+                        		AND B.STAN_YR <![CDATA[<=]]> #searchStanYrTo#
+                        	</isNotEmpty>
+                        </isEmpty>
+                        
+                         <!-- 검색조건 : 과학기술인등록번호 -->
+		                <isNotEmpty property="searchRrno">
+		                	AND D.RRNO = #searchRrno#
+		                </isNotEmpty>
+                        
+                        <!-- 검색조건 : 과제중단여부 -->
+		                <isNotEmpty property="searchPjtStopYn">
+		                	AND C.PJT_STOP_YN = #searchPjtStopYn#
+		                </isNotEmpty>
+                        
+		                <!-- 검색조건 : 부처명 -->
+		                <isNotEmpty property="searchDeptCd">
+                        	AND A.DEPT_CD = #searchDeptCd#
+						</isNotEmpty>
+						
+						<!-- 과제관리 기관 -->
+						<isNotEmpty property="searchPjtMgntOrgNm">
+                        	AND B.PJT_MGNT_ORG_NM LIKE  '%' || #searchPjtMgntOrgNm# || '%'
+						</isNotEmpty>
+		                
+		                <!-- 검색조건 : 사업명 -->
+		                <isNotEmpty property="searchBzNm">
+		                	AND A.BZ_NM LIKE '%' || #searchBzNm# || '%'
+		                </isNotEmpty>
+		                
+		                <!-- 검색조건 : 과제명 -->
+		                <isNotEmpty property="searchKorPjtNm">
+		                	AND B.KOR_PJT_NM LIKE '%' || #searchKorPjtNm# || '%'
+		                </isNotEmpty>
+		                
+		                <!-- 검색조건 : 연구책임자명 -->
+		                <!-- (A: 연구책임자) -->
+		                <isNotEmpty property="searchMngrHmNm">
+		                	AND D.HM_NM LIKE '%' || #searchMngrHmNm# || '%'
+		                </isNotEmpty>
+		                    
+		                <!-- 검색조건 : 연구원명 -->
+		                <!-- (B:참여연구원) 
+		                AND EXISTS (
+		                    SELECT NULL FROM GLOBAL.SH_PRTCP_MP_INFO
+		                    WHERE
+		                            PJT_ID = B.PJT_ID
+		                        AND ROLE_SLCT  = 'B' 
+		                        AND HM_NM LIKE '%%'
+		                )
+		                -->
+		                <!-- 검색조건 : 수행기관명 -->
+		                <isNotEmpty property="searchPjtPrfrmOrgNm">
+		                	AND 
+		                	(
+		                		B.PJT_PRFRM_ORG_NM LIKE '%' || #searchPjtPrfrmOrgNm# || '%'
+		                		<isNotEmpty property="searchPjtPrfrmHOrgNm">
+								    OR B.PJT_PRFRM_ORG_NM IN
+								    <iterate property="searchPjtPrfrmHOrgNm" conjunction="," open="(" close=")">
+								    	 #searchPjtPrfrmHOrgNm[]#
+								    </iterate>
+							    </isNotEmpty>
+		                	)
+		                </isNotEmpty>
+		          GROUP BY B.PJT_ID,
+                           B.STAN_YR,
+                           A.DEPT_CD,
+                           B.PJT_PRFRM_ORG_NM,
+                           B.KOR_PJT_NM,
+                           C.PJT_FINAL_ASSMT_PTS,
+                           C.PJT_FINAL_ASSMT_GRD_DES,
+                           C.PJT_STOP_YN,
+                           C.STOP_TYPE_CD,
+                           C.SRC_ORG_ID,
+                           D.HM_NM,          
+                           E.PJT_FINAL_ASSMT_GRD_CD     
+		            ORDER BY 
+		                STAN_YR DESC, DEPT_CD ASC, PJT_PRFRM_ORG_NM ASC, KOR_PJT_NM ASC 
+		        ) A
+		        ORDER BY RN ASC
+		    ) A
+		) A
+		WHERE
+				1=1
+		    AND A.IDX <![CDATA[>]]> #firstIndex# 
+		    AND A.IDX <![CDATA[<=]]> #lastIndex#	                                
+	</select>
+	
+	
+	
+	
+	<!-- 과제최종평가이력 목록 갯수를 조회한다. -->
+	<select id="kr.go.ntis.ev.hist.pjt.PjtFnerHist.selectPjtFnerHistListTotCnt" resultClass="int" parameterClass="pjtFnerHistVO">
+		SELECT
+			COUNT(1) AS TOTCNT
+		FROM
+			GLOBAL.SH_PROG_INFO A,     <!-- 과제_사업정보 -->
+			GLOBAL.SH_PJT_MAIN B,      <!-- 과제_기본정보 -->
+			GLOBAL.SH_PJT_FNER C,      <!-- 과제최종평가결과 -->
+			GLOBAL.SH_PRTCP_MP_INFO D  <!-- 참여인력정보 -->			
+		WHERE
+				A.SRC_ORG_ID = B.SRC_ORG_ID     <!-- 출처기관아이디 -->
+			AND A.BZ_ID      = B.BDGT_PROG_CD   <!-- 사업코드  -->
+			AND A.STAN_YR    = B.STAN_YR        <!-- 기준년도 -->
+			AND B.PJT_ID     = C.PJT_ID         <!-- 과제고유번호 -->
+			AND B.PJT_ID     = D.PJT_ID         <!-- 과제고유번호 -->
+			AND A.DATA_MODIFY_SLCT != 'D'
+			AND D.ROLE_SLCT  = 'A'
+			AND B.OP_CD = 'A'
+			AND C.OP_CD = 'A'
+			AND D.OP_CD = 'A'
+		
+			<!-- 검색조건 : 대상기간 -->
+			<isNotEmpty property="searchStanYrFrom">
+				<isNotEmpty property="searchStanYrTo">
+					AND B.STAN_YR BETWEEN #searchStanYrFrom# AND #searchStanYrTo#
+				</isNotEmpty>
+				<isEmpty property="searchStanYrTo">
+					AND B.STAN_YR <![CDATA[>=]]> #searchStanYrFrom# 
+				</isEmpty>
+			</isNotEmpty>
+			<isEmpty property="searchStanYrFrom">
+				<isNotEmpty property="searchStanYrTo">
+					AND B.STAN_YR <![CDATA[<=]]> #searchStanYrTo#
+				</isNotEmpty>
+			</isEmpty>
+			
+	       <!-- 검색조건 : 과학기술인등록번호 -->
+             <isNotEmpty property="searchRrno">
+                	AND D.RRNO = #searchRrno#
+             </isNotEmpty>
+		
+			<!-- 검색조건 : 과제중단여부 -->
+			<isNotEmpty property="searchPjtStopYn">
+				AND C.PJT_STOP_YN = #searchPjtStopYn#
+			</isNotEmpty>
+		
+			<!-- 검색조건 : 부처명 -->
+			<isNotEmpty property="searchDeptCd">
+				AND A.DEPT_CD = #searchDeptCd#
+			</isNotEmpty>
+		
+			<!-- 과제관리 기관 -->
+			<isNotEmpty property="searchPjtMgntOrgNm">
+				AND B.PJT_MGNT_ORG_NM LIKE  '%' || #searchPjtMgntOrgNm# || '%'
+			</isNotEmpty>
+		
+			<!-- 검색조건 : 사업명 -->
+			<isNotEmpty property="searchBzNm">
+				AND A.BZ_NM LIKE '%' || #searchBzNm# || '%'
+			</isNotEmpty>
+		
+			<!-- 검색조건 : 과제명 -->
+			<isNotEmpty property="searchKorPjtNm">
+				AND B.KOR_PJT_NM LIKE '%' || #searchKorPjtNm# || '%'
+			</isNotEmpty>
+		
+			<!-- 검색조건 : 연구책임자명 --> 
+			<!-- (A: 연구책임자) -->
+			<isNotEmpty property="searchMngrHmNm">
+				AND D.HM_NM LIKE '%' || #searchMngrHmNm# || '%'
+			</isNotEmpty>
+		
+			<!-- 검색조건 : 연구원명 -->
+			<!-- (B:참여연구원) 
+			AND EXISTS (
+				SELECT 
+					NULL 
+				FROM 
+					GLOBAL.SH_PRTCP_MP_INFO
+				WHERE
+						PJT_ID = B.PJT_ID
+					AND ROLE_SLCT  = 'B' 
+					AND HM_NM LIKE '%%'
+			)
+			-->
+			<!-- 검색조건 : 수행기관명 -->
+			<isNotEmpty property="searchPjtPrfrmOrgNm">
+               	AND 
+               	(
+               		B.PJT_PRFRM_ORG_NM LIKE '%' || #searchPjtPrfrmOrgNm# || '%'
+               		<isNotEmpty property="searchPjtPrfrmHOrgNm">
+					    OR B.PJT_PRFRM_ORG_NM IN
+					    <iterate property="searchPjtPrfrmHOrgNm" conjunction="," open="(" close=")">
+					    	 #searchPjtPrfrmHOrgNm[]#
+					    </iterate>
+				    </isNotEmpty>
+               	)
+               </isNotEmpty>	                
+	</select>
+	
+	
+	<!-- 과제최종평가이력 상세내용을 조회한다. -->
+	<select id="kr.go.ntis.ev.hist.pjt.PjtFnerHist.selectPjtFnerHistInfo" resultClass="egovMap" parameterClass="pjtFnerHistVO">
+		SELECT
+            A.PJT_ID
+          , A.TSYR_RSCH_START_DT
+          , A.TSYR_RSCH_END_DT
+          , A.PJT_NO
+          , A.TOT_RSCH_START_DT
+          , A.TOT_RSCH_END_DT
+          , A.BZ_NM
+          , A.KOR_PJT_NM
+          , A.PJT_PRFRM_ORG_NM
+          , A.MNGR_HM_NM
+          , A.RSCH_MGNT_ORG_NM
+          , A.PJT_MGNT_ORG_NM
+          , A.PJT_FNER_ASSMT_DT
+          , A.PJT_STOP_YN
+          , A.PJT_STOP_YN_NM
+          , A.STOP_TYPE_CD
+          , A.STOP_TYPE_CD_NM
+          , A.STOP_RSON_CD
+          , A.STOP_RSON_CD_NM
+          , A.PJT_FINAL_ASSMT_PTS
+          , A.PJT_FINAL_ASSMT_SLCT_CD
+          , A.PJT_FINAL_ASSMT_SLCT_CD_NM
+          , A.PJT_FINAL_ASSMT_GRD_DES
+          , A.CLGT_PJT_ASSMT_YN
+          , A.SRC_ORG_ID
+          ,CASE WHEN  PJT_FINAL_ASSMT_PTS <![CDATA[>=]]>  A.ABEV_START_PTS THEN '가점 후보추천'
+                         WHEN  PJT_FINAL_ASSMT_PTS <![CDATA[<=]]>  A.ABEV_END_PTS THEN '감점 후보추천'
+                     ELSE '' END AS ABEV_RECOMMEND
+			FROM
+			        (SELECT
+			                      B.PJT_ID
+			                    , TO_CHAR(C.TSYR_RSCH_START_DT, 'YYYY-MM-DD') AS TSYR_RSCH_START_DT
+			                    , TO_CHAR(C.TSYR_RSCH_END_DT, 'YYYY-MM-DD') AS TSYR_RSCH_END_DT
+			                    , B.PJT_NO
+			                    , TO_CHAR(C.TOT_RSCH_START_DT, 'YYYY-MM-DD') AS TOT_RSCH_START_DT
+			                    , TO_CHAR(C.TOT_RSCH_END_DT, 'YYYY-MM-DD') AS TOT_RSCH_END_DT
+			                    , A.BZ_NM
+			                    , B.KOR_PJT_NM    
+			                    , B.PJT_PRFRM_ORG_NM
+			                    , E.HM_NM AS MNGR_HM_NM
+			                    , B.RSCH_MGNT_ORG_NM
+			                    , B.PJT_MGNT_ORG_NM
+			                    , TO_CHAR(D.PJT_FINAL_ASSMT_DT, 'YYYY-MM-DD') AS PJT_FNER_ASSMT_DT
+			                    , D.PJT_STOP_YN
+			                    , DECODE(D.PJT_STOP_YN, 'Y', '예', '아니오') AS PJT_STOP_YN_NM
+			                    , D.STOP_TYPE_CD
+			                    , FNC_GET_STOP_TYPE_CD_NM(D.SRC_ORG_ID, D.STOP_TYPE_CD)  AS STOP_TYPE_CD_NM
+			                    , D.STOP_RSON_CD
+			                    , FNC_GET_STOP_RSON_CD_NM(D.SRC_ORG_ID, D.STOP_RSON_CD)  AS STOP_RSON_CD_NM
+			                    , D.PJT_FINAL_ASSMT_PTS
+			                    , D.PJT_FINAL_ASSMT_SLCT_CD
+			                    , FNC_GET_CMN_CD_NM('GT054', D.PJT_FINAL_ASSMT_SLCT_CD)  AS PJT_FINAL_ASSMT_SLCT_CD_NM
+			                    , D.PJT_FINAL_ASSMT_GRD_DES
+			                    , D.CLGT_PJT_ASSMT_YN
+			                    , D.SRC_ORG_ID
+			                    , (SELECT MAX(ABEV_START_PTS) FROM TBDEV.TB_FNER_CD WHERE D.PJT_FINAL_ASSMT_GRD_CD = PJT_FINAL_ASSMT_GRD_CD  ) AS ABEV_START_PTS
+			                    , (SELECT MIN(ABEV_END_PTS) FROM TBDEV.TB_FNER_CD WHERE D.PJT_FINAL_ASSMT_GRD_CD = PJT_FINAL_ASSMT_GRD_CD  ) AS ABEV_END_PTS
+			                FROM
+			                    GLOBAL.SH_PROG_INFO A,     
+			                    GLOBAL.SH_PJT_MAIN B,      
+			                    GLOBAL.SH_PJT_DTL C,
+			                    GLOBAL.SH_PJT_FNER D,      
+			                    GLOBAL.SH_PRTCP_MP_INFO E
+			                WHERE
+			                        A.SRC_ORG_ID = B.SRC_ORG_ID     
+			                    AND A.BZ_ID      = B.BDGT_PROG_CD   
+			                    AND A.STAN_YR    = B.STAN_YR        
+			                    AND B.PJT_ID     = C.PJT_ID         
+			                    AND B.PJT_ID     = D.PJT_ID
+			                    AND B.PJT_ID     = E.PJT_ID
+			                    AND A.DATA_MODIFY_SLCT != 'D'
+			                    AND E.ROLE_SLCT  = 'A'
+			                    AND B.OP_CD = 'A'
+			                    AND C.OP_CD = 'A'
+			                    AND D.OP_CD = 'A'
+			                    AND E.OP_CD = 'A'
+			                    AND B.PJT_ID = #pjtId#
+       				 ) A            
+	</select>
+	
+	
+	<!-- 과제최종평가 평가위원 목록 조회 -->
+	<select id="kr.go.ntis.ev.hist.pjt.PjtFnerHist.selectAsesorList" resultClass="egovMap" parameterClass="pjtFnerHistVO">
+		SELECT
+		      ROWNUM AS RN
+		    , A.ASESOR_NTIS_SN
+		    , A.RRNO
+		    , A.ASESOR_HM_NM
+		    , A.PJT_ASSMT_PRTCP_YM
+		    , A.ORG_NM
+		    , A.ORG_CLS               
+		FROM
+		(
+		    SELECT      
+		          A.ASESOR_NTIS_SN
+		        , A.RRNO
+		        , A.HM_NM AS ASESOR_HM_NM
+		        , SUBSTR(A.PJT_ASSMT_PRTCP_YM, 1, 4) || '.' || SUBSTR(A.PJT_ASSMT_PRTCP_YM, 5) AS PJT_ASSMT_PRTCP_YM
+		        , B.ORG_NM
+		        , B.ORG_CLS
+		    FROM
+		        GLOBAL.SH_PJT_ASESOR A,
+		        HURIMS_MAN.HURIMS_MAN_DATA B    
+		    WHERE
+		            A.RRNO = B.REG_NO
+		        AND A.ASSMT_PHASE_CD = '04'
+		        AND A.OP_CD = 'A'		        
+		        AND A.PJT_ID = #pjtId#
+		    <isNotEmpty property="orderItem">
+				ORDER BY $orderItem$ $orderDivCd$
+			</isNotEmpty>  
+		) A	
+		ORDER BY RN ASC	
+	</select>
+	
+	
+	
+	<!-- 기관별 평가등급 목록 조회 -->
+	<select id="kr.go.ntis.ev.hist.pjt.PjtFnerHist.selectOrgAssmtGrdList" resultClass="egovMap" parameterClass="pjtFnerHistVO">
+		SELECT 
+		      B.PJT_FINAL_ASSMT_GRD_NM
+		    , B.RLEV_STAN_VAL*100 AS RLEV_STAN_VAL
+		    , B.ABEV_STAN_VAL AS ABEV_STAN_VAL
+		FROM 
+		    GLOBAL.SH_PJT_FNER A,
+		    TBDEV.TB_FNER_CD B
+		WHERE
+		        A.PJT_FINAL_ASSMT_GRD_CD = B.PJT_FINAL_ASSMT_GRD_CD
+		        AND A.OP_CD = 'A' 
+		    AND A.PJT_ID = #pjtId#
+		ORDER BY OPT1 ASC
+	</select>
+	
+	
+	<!-- 기관별 중단유형,사유 목록 조회  (트리구조) -->
+	<select id="kr.go.ntis.ev.hist.pjt.PjtFnerHist.selectStopTypeRsonCdList" resultClass="egovMap" parameterClass="String">
+		SELECT 
+              A.GRP_CD
+            , A.CD
+            , A.CD_NM
+            , FNC_GET_STOP_TYPE_RSON(A.OPTION3, A.CD) AS STOP_RSON_NM  
+        FROM 
+            GLOBAL.TB_SYSTEM_CD A,
+            (
+                SELECT 
+                      GRP_CD
+                    , CD
+                    , MAX(VER_NO) AS VER_NO     
+                FROM 
+                    GLOBAL.TB_SYSTEM_CD 
+                WHERE 
+                    1=1
+                    AND STD_CD_YN = 'Y'
+                    AND GRP_CD = 'GT052'                
+                GROUP BY 
+                      GRP_CD
+                    , CD
+            ) B
+        WHERE 
+                A.GRP_CD     = B.GRP_CD
+            AND A.CD         = B.CD
+            AND A.VER_NO     = B.VER_NO
+            AND A.STD_CD_YN  = 'Y'
+            AND A.GRP_CD     = 'GT052'
+            AND A.OPTION3    = #value#
+        ORDER BY A.CD ASC 
+	</select>
+	
+	
+	<!-- 기관별 중단유형 목록 조회 -->
+	<select id="kr.go.ntis.ev.hist.pjt.PjtFnerHist.selectStopTypeCdList" resultClass="egovMap" parameterClass="String">
+		SELECT 
+		      A.CD
+		    , A.CD_NM     
+		FROM 
+	        GLOBAL.TB_SYSTEM_CD A,
+	        (
+	            SELECT 
+	                  GRP_CD
+	                , CD
+	                , MAX(VER_NO) AS VER_NO     
+	            FROM 
+	                GLOBAL.TB_SYSTEM_CD 
+	            WHERE 
+	                1=1
+	                AND STD_CD_YN = 'Y'
+	                AND GRP_CD = 'GT052'                
+	            GROUP BY 
+	                  GRP_CD
+	                , CD
+	        ) B
+	    WHERE 
+	            A.GRP_CD     = B.GRP_CD
+	        AND A.CD         = B.CD
+	        AND A.VER_NO     = B.VER_NO
+	        AND A.STD_CD_YN  = 'Y'
+	        AND A.GRP_CD     = 'GT052'
+	        AND A.OPTION3    = #value#
+	    ORDER BY 
+	        A.CD ASC
+	</select>
+	
+	<!-- 기관별 중단사유 목록 조회 -->
+	<select id="kr.go.ntis.ev.hist.pjt.PjtFnerHist.selectStopRsonCdList" resultClass="egovMap" parameterClass="String">
+		SELECT 
+		      A.CD
+		    , A.CD_NM     
+		FROM 
+	        GLOBAL.TB_SYSTEM_CD A,
+	        (
+	            SELECT 
+	                  GRP_CD
+	                , CD
+	                , MAX(VER_NO) AS VER_NO     
+	            FROM 
+	                GLOBAL.TB_SYSTEM_CD 
+	            WHERE 
+	                1=1
+	                AND STD_CD_YN = 'Y'
+	                AND GRP_CD = 'GT053'                
+	            GROUP BY 
+	                  GRP_CD
+	                , CD
+	        ) B
+	    WHERE 
+	            A.GRP_CD     = B.GRP_CD
+	        AND A.CD         = B.CD
+	        AND A.VER_NO     = B.VER_NO
+	        AND A.STD_CD_YN  = 'Y'
+	        AND A.GRP_CD     = 'GT053'
+	        AND A.OPTION3    = #value#
+	    ORDER BY 
+	        A.CD ASC
+	</select>
+	
+	
+	
+	
+	<!-- 가감점코드 목록 조회 -->
+	<select id="kr.go.ntis.ev.hist.pjt.PjtFnerHist.selectAdsubCdList" resultClass="egovMap" parameterClass="pjtFnerHistVO">
+		SELECT
+		      A.ADSUB_SLCT_CD
+            , FNC_GET_FNER_CD_NM('ER001', A.ADSUB_SLCT_CD) AS ADSUB_SLCT_CD_NM
+		    , A.ADSUB_ITEM
+		    , A.ADSUB_DES
+		    , FNC_GET_ADSUB_TRGT(A.ADSUB_MGNT_NO) AS ADSUB_TRGT_CD_NM
+		    , A.ADSUB_APPL_ORG_SLCT_CD
+		    , FNC_GET_FNER_CD_NM('ER002', A.ADSUB_APPL_ORG_SLCT_CD) AS ADSUB_APPL_ORG_SLCT_CD_NM		    
+		    , A.ADSUB_GRANT_DES
+		    , A.ADSUB_APPL_STAN_DT_SLCT_CD
+		    , FNC_GET_FNER_CD_NM('ER003', A.ADSUB_APPL_STAN_DT_SLCT_CD) AS ADSUB_APPL_STAN_DT_SLCT_CD_NM
+		    , A.ADSUB_APPL_PROD_DES
+		FROM
+		    EV_PJT_FNER_ADSUB_CD A
+		WHERE
+			EXISTS (
+	        			SELECT 
+						    NULL 
+						FROM 
+						    EV_PJT_FNER_ADSUB_TRGT X
+						WHERE
+						    	X.ADSUB_MGNT_NO = A.ADSUB_MGNT_NO
+	        		)
+		ORDER BY     
+		    A.ADSUB_SLCT_CD ASC, A.ADSUB_ITEM ASC
+	</select>
+
+
+
+	<!-- 과제최종평가이력 목록을 검색한다.(엑셀 다운로드용)
+	2016.11.08 엑셀 다운로드 추가 
+	-->
+	<select id="kr.go.ntis.ev.hist.pjt.PjtFnerHist.selectPjtFnerHistListForExcel" resultClass="egovMap" parameterClass="pjtFnerHistVO">
+		SELECT
+		      A.RN 
+		    , A.PJT_ID
+		    , A.STAN_YR
+		    , FNC_GET_CMN_CD_NM('GT031', A.DEPT_CD) AS PROG_MSTR_NM
+		    , A.PJT_PRFRM_ORG_NM
+		    , A.KOR_PJT_NM
+		    , A.PJT_FINAL_ASSMT_PTS
+			, A.PJT_FINAL_ASSMT_GRD_DES
+			, A.PJT_STOP_YN
+		    , FNC_GET_STOP_TYPE_CD_NM(A.SRC_ORG_ID, A.STOP_TYPE_CD) AS STOP_TYPE_NM
+		    , A.MNGR_HM_NM
+		    , A.ABEV_RECOMMEND
+		FROM
+		(
+		    SELECT
+		          ROWNUM AS IDX
+		        , A.RN
+		        , A.PJT_ID
+		        , A.STAN_YR
+		        , A.DEPT_CD
+		        , A.PJT_PRFRM_ORG_NM
+		        , A.KOR_PJT_NM
+		        , A.PJT_FINAL_ASSMT_PTS
+				, A.PJT_FINAL_ASSMT_GRD_DES
+				, A.PJT_STOP_YN
+		        , A.STOP_TYPE_CD
+		        , A.SRC_ORG_ID
+		        , A.MNGR_HM_NM
+		        , A.ABEV_RECOMMEND
+		    FROM
+		    (
+		        SELECT
+		              ROWNUM AS RN
+		            , A.PJT_ID
+		            , A.STAN_YR
+		            , A.DEPT_CD
+		            , A.PJT_PRFRM_ORG_NM
+		            , A.KOR_PJT_NM
+		            , A.PJT_FINAL_ASSMT_PTS
+					, A.PJT_FINAL_ASSMT_GRD_DES
+					, A.PJT_STOP_YN
+		            , A.STOP_TYPE_CD
+		            , A.SRC_ORG_ID
+		            , A.MNGR_HM_NM
+		            , A.PJT_FINAL_ASSMT_GRD_CD
+		            ,CASE WHEN  PJT_FINAL_ASSMT_PTS <![CDATA[>=]]>  A.ABEV_START_PTS THEN '가점 후보추천'
+                         WHEN  PJT_FINAL_ASSMT_PTS <![CDATA[<=]]>  A.ABEV_END_PTS THEN '감점 후보추천'
+                         ELSE '' END AS ABEV_RECOMMEND 
+		        FROM
+		        (
+		            SELECT
+		                  B.PJT_ID
+		                , B.STAN_YR
+		                , A.DEPT_CD
+		                , B.PJT_PRFRM_ORG_NM
+		                , B.KOR_PJT_NM
+						, C.PJT_FINAL_ASSMT_PTS
+						, C.PJT_FINAL_ASSMT_GRD_DES
+						, C.PJT_STOP_YN
+		                , C.STOP_TYPE_CD
+		                , C.SRC_ORG_ID
+		                , D.HM_NM AS MNGR_HM_NM
+		                ,(SELECT CD_NM FROM GLOBAL.TB_SYSTEM_CD WHERE GRP_CD = 'GT055' AND CD =  E.PJT_FINAL_ASSMT_GRD_CD) PJT_FINAL_ASSMT_GRD_CD
+                        ,MAX(E.ABEV_START_PTS) ABEV_START_PTS
+                        ,MIN(E.ABEV_END_PTS) ABEV_END_PTS  
+		            FROM
+		                GLOBAL.SH_PROG_INFO A,     <!-- 과제_사업정보 -->
+		                GLOBAL.SH_PJT_MAIN B,      <!-- 과제_기본정보 -->
+		                GLOBAL.SH_PJT_FNER C,      <!-- 과제최종평가결과 -->
+		                GLOBAL.SH_PRTCP_MP_INFO D,  <!-- 참여인력정보 -->
+		                TBDEV.TB_FNER_CD E
+		            WHERE
+		                    A.SRC_ORG_ID = B.SRC_ORG_ID     <!-- 출처기관아이디 -->
+		                AND A.BZ_ID      = B.BDGT_PROG_CD   <!-- 사업코드  -->
+		                AND A.STAN_YR    = B.STAN_YR        <!-- 기준년도 -->
+		                AND B.PJT_ID     = C.PJT_ID         <!-- 과제고유번호 -->
+		                AND B.PJT_ID     = D.PJT_ID         <!-- 과제고유번호 -->
+		                AND A.DATA_MODIFY_SLCT != 'D'
+		                AND D.ROLE_SLCT  = 'A'
+		                AND B.OP_CD = 'A'
+		                AND C.OP_CD = 'A'
+		                AND D.OP_CD = 'A'
+						AND  B.PJT_ID IN
+					    <iterate property="chk" conjunction="," open="(" close=")">
+					    	 #chk[]#
+					    </iterate>
+					    AND C.PJT_FINAL_ASSMT_GRD_CD = E.PJT_FINAL_ASSMT_GRD_CD        
+					GROUP BY B.PJT_ID,
+                             B.STAN_YR,
+                             A.DEPT_CD,
+                             B.PJT_PRFRM_ORG_NM,
+                             B.KOR_PJT_NM,
+                             C.PJT_FINAL_ASSMT_PTS,
+                             C.PJT_FINAL_ASSMT_GRD_DES,
+                             C.PJT_STOP_YN,
+                             C.STOP_TYPE_CD,
+                             C.SRC_ORG_ID,
+                             D.HM_NM,          
+                             E.PJT_FINAL_ASSMT_GRD_CD      
+		            ORDER BY 
+		                STAN_YR DESC, DEPT_CD ASC, PJT_PRFRM_ORG_NM ASC, KOR_PJT_NM ASC 
+		        ) A
+		        ORDER BY RN ASC
+		    ) A
+		) A
+		WHERE
+				1=1
+		    AND A.IDX <![CDATA[<=]]> 50	                                
+	</select>	
+	
+
+
+		
+</sqlMap>

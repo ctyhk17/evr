@@ -1,0 +1,58 @@
+@charset "utf-8";
+/* CSS Document */
+
+.t_head {font-size:22px; font-weight:normal; margin-bottom:0px;}
+.t_head span {font-size:12px; color:#777; padding-top:5px; display:inline-block;}
+.table1 { border-collapse:collapse; border-spacing:0; width:100%; border-top:2px solid #bebebe; font-size:13px; margin-bottom:10px;}
+.table1 caption {text-align:left; padding-right:15px; color:#777;width:100%; padding-bottom:5px;}
+.table1 th {border-bottom:1px solid #cecece; padding:13px; color:#333; background-color:#f2f2f2; font-size:14px;}
+.table1 td {border-right:1px solid #cecece; border-bottom:1px solid #cecece; padding:8px; line-height:1.5em; font-size:13px;  color:#666; }
+
+.table1 th.no{width:40px; }
+.table1 th.title{}
+.table1 th.file {width:80px;}
+.table1 th.author {width:80px;}
+.table1 th.num{width:80px;}
+.table1 th.last{border-right:0px;}
+
+.table1 td.no{width:40px; text-align:center; }
+.table1 td.title{width:;}
+.table1 td.file {width:80px; text-align:center;}
+.table1 td.author {width:80px; text-align:center;}
+.table1 td.num{width:80px; text-align:center; }
+.table1 td.last{text-align:center;  border-right:0px;}
+
+
+.tabler { border-collapse:collapse; border-spacing:0; width:100%; border-top:1px solid #bbb; font-size:13px; margin-bottom:10px; border-bottom:1px solid #bbb;}
+.tabler th{border-bottom:1px solid #ddd; padding:13px;  color:#333; background-color:#f2f2f2; font-size:14px; /*text-align:left;*/}
+.tabler td{border-bottom:1px solid #ddd; padding:8px; line-height:1.5em; font-size:13px;  color:#666; }
+.tabler th img{vertical-align:middle;}
+.tabler td img{vertical-align:middle;}
+.tabler td.last{ border-bottom:1px solid #bbb;}
+.tabler.tbl{border-top:2px solid #bebebe; border-bottom:1px solid #bebebe;}
+
+/*
+.popuplayerbox{margin: 0 auto;max-width:100%;min-width: 400px;clear:none; float: none; border-radius:7px; border:2px solid #333; padding:20px;}
+*/
+.popuplayerbox{margin: 0 auto;max-width:100%;min-width: 400px;clear:none; float: none; border-radius:7px; border:2px solid #333; padding:20px;background-color:#ffffff;}
+
+
+/* r&d공고읽기 */
+.table2{line-height:1.7em;}
+.table2 a {text-decoration:none;} 
+.table2 a:hover {text-decoration:underline;} 
+
+.table2 {width:100%; border-top:2px solid #ccc; border-collapse:collapse; font-size:12px; margin-bottom:10px;}
+.table2 caption {text-align:right; padding-right:15px; color:#777;width:100%; padding-bottom:5px;}
+.table2 th {border-bottom:1px solid #ccc; padding:5px 10px 5px 0; color:#000; background-color:#f2f2f2; font-size:14px; text-align:right; line-height:30px; }
+.table2 td {border-right:1px solid #ccc; border-bottom:1px solid #cecece; padding:5px 0 5px 10px;  text-align:left;  font-size:14px; color:#595959;}
+.table2 th.last, .table2 td.last{border-right:0px;}
+
+
+
+
+/*개인정보처리방침*/
+.rulestable {width:100%; border:0px solid #cecece; border-collapse:collapse; font-size:12px; margin:20px 0 0 0; display:block;}
+.rulestable th {background:#f3f3f3; padding:5px; border:1px solid #cecece; }
+.rulestable td {border:1px solid #cecece; padding:5px;line-height:1.7em;  text-align:center; }
+.rulestable caption {text-align:left; font-size:16px; margin-bottom:7px;}

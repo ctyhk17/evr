@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+
+<sqlMap namespace="kr.go.ntis.ev.mgnt.adsub.PjtFnerAdsubMgnt">
+
+	
+
+
+
+	
+
+	<typeAlias  alias="pjtFnerAdsubMgntVO" type="kr.go.ntis.ev.mgnt.adsub.service.PjtFnerAdsubMgntVO"/>
+	
+	
+
+	<!-- 과제평가 가감점 목록을 조회 -->
+	<select id="kr.go.ntis.ev.mgnt.adsub.PjtFnerAdsubMgnt.selectPjtFnerAdsubMgntList" resultClass="egovMap" parameterClass="pjtFnerAdsubMgntVO">
+	
+		SELECT
+		      A.RN 
+		    , A.ADSUB_MGNT_NO
+		    , A.ADSUB_SLCT_CD
+		    , (SELECT CD_NM FROM EV_PJT_ASSMT_HIST_INFO_CD B WHERE GRP_CD = 'ER001' AND CD = A.ADSUB_SLCT_CD) AS ADSUB_SLCT_CD_NM
+		    , A.ADSUB_ITEM	    
+		    , A.ADSUB_DES
+		    , FNC_GET_ADSUB_TRGT(A.ADSUB_MGNT_NO) AS ADSUB_TRGT_CD_NM
+		    , A.ADSUB_APPL_ORG_SLCT_CD
+		    , (SELECT CD_NM FROM EV_PJT_ASSMT_HIST_INFO_CD B WHERE GRP_CD = 'ER002' AND CD = A.ADSUB_APPL_ORG_SLCT_CD) AS ADSUB_APPL_ORG_SLCT_CD_NM  
+		    , A.ADSUB_GRANT_DES
+		    , A.ADSUB_APPL_STAN_DT_SLCT_CD
+		    , (SELECT CD_NM FROM EV_PJT_ASSMT_HIST_INFO_CD B WHERE GRP_CD = 'ER003' AND CD = A.ADSUB_APPL_STAN_DT_SLCT_CD) AS ADSUB_APPL_STAN_DT_SLCT_CD_NM
+		    , A.ADSUB_APPL_PROD_DES
+		    , A.ADSUB_EXAM_DES
+		    , A.NOTE
+		FROM
+		(
+		    SELECT
+		          ROWNUM AS IDX
+		        , A.RN
+		        , A.ADSUB_MGNT_NO
+		        , A.ADSUB_SLCT_CD
+		        , A.ADSUB_ITEM
+		        , A.ADSUB_DES
+		        , A.ADSUB_APPL_ORG_SLCT_CD
+		        , A.ADSUB_GRANT_DES
+		        , A.ADSUB_APPL_STAN_DT_SLCT_CD
+		        , A.ADSUB_APPL_PROD_DES
+		        , A.ADSUB_EXAM_DES
+		        , A.NOTE
+		    FROM
+		    (
+		        SELECT
+		              ROWNUM AS RN
+		            , A.ADSUB_MGNT_NO
+			        , A.ADSUB_SLCT_CD
+			        , A.ADSUB_ITEM
+			        , A.ADSUB_DES
+			        , A.ADSUB_APPL_ORG_SLCT_CD
+			        , A.ADSUB_GRANT_DES
+			        , A.ADSUB_APPL_STAN_DT_SLCT_CD
+			        , A.ADSUB_APPL_PROD_DES
+			        , A.ADSUB_EXAM_DES
+			        , A.NOTE
+		        FROM
+		        (
+			            SELECT   
+				              A.ADSUB_MGNT_NO
+				            , A.ADSUB_SLCT_CD
+				            , A.ADSUB_ITEM
+				            , A.ADSUB_DES
+				            , A.ADSUB_APPL_ORG_SLCT_CD
+				            , A.ADSUB_GRANT_DES
+				            , A.ADSUB_APPL_STAN_DT_SLCT_CD
+				            , A.ADSUB_APPL_PROD_DES
+				            , A.ADSUB_EXAM_DES
+				            , A.NOTE    
+				        FROM   
+				            EV_PJT_FNER_ADSUB_CD A
+				        WHERE
+				        	1=1
+				        	<isNotEmpty property="searchAdsubSlctCd">
+				        		AND A.ADSUB_SLCT_CD = #searchAdsubSlctCd#
+				        	</isNotEmpty>
+				        		AND EXISTS (
+				        			SELECT 
+									    NULL 
+									FROM 
+									    EV_PJT_FNER_ADSUB_TRGT X
+									WHERE
+									    	X.ADSUB_MGNT_NO = A.ADSUB_MGNT_NO
+									    	AND (
+									    		0 = 1
+									    		<isNotEmpty property="searchAdsubTrgtCd">
+												    OR X.ADSUB_TRGT_CD IN
+												    <iterate property="searchAdsubTrgtCd" conjunction="," open="(" close=")">
+												    	 #searchAdsubTrgtCd[]#
+												    </iterate>
+											    </isNotEmpty>
+									    	)
+				        		)
+				        	
+				        	<isNotEmpty property="searchAdsubDes">
+				        		AND A.ADSUB_DES LIKE '%' || #searchAdsubDes# || '%'
+				        	</isNotEmpty>
+				        ORDER BY 
+				              A.ADSUB_SLCT_CD ASC, A.ADSUB_ITEM ASC
+		        ) A
+		        ORDER BY RN ASC
+		    ) A
+		) A
+		WHERE
+				1=1
+		    AND A.IDX <![CDATA[>]]> #firstIndex# 
+		    AND A.IDX <![CDATA[<=]]> #lastIndex#	
+		    
+		    
+		    
+	</select>
+	
+	<!-- 과제평가 가감점 목록 갯수를 조회 -->
+	<select id="kr.go.ntis.ev.mgnt.adsub.PjtFnerAdsubMgnt.selectPjtFnerAdsubMgntListTotCnt" resultClass="int" parameterClass="pjtFnerAdsubMgntVO">
+		SELECT
+			COUNT(1) AS TOTCNT
+        FROM   
+				            EV_PJT_FNER_ADSUB_CD A
+				        WHERE
+				        	1=1
+				        	<isNotEmpty property="searchAdsubSlctCd">
+				        		AND A.ADSUB_SLCT_CD = #searchAdsubSlctCd#
+				        	</isNotEmpty>
+				        		AND EXISTS (
+				        			SELECT 
+									    NULL 
+									FROM 
+									    EV_PJT_FNER_ADSUB_TRGT X
+									WHERE
+									    	X.ADSUB_MGNT_NO = A.ADSUB_MGNT_NO
+									    	AND (
+									    		0 = 1
+									    		<isNotEmpty property="searchAdsubTrgtCd">
+												    OR X.ADSUB_TRGT_CD IN
+												    <iterate property="searchAdsubTrgtCd" conjunction="," open="(" close=")">
+												    	 #searchAdsubTrgtCd[]#
+												    </iterate>
+											    </isNotEmpty>
+									    	)
+				        		)
+				        	
+				        	<isNotEmpty property="searchAdsubDes">
+				        		AND A.ADSUB_DES LIKE '%' || #searchAdsubDes# || '%'
+				        	</isNotEmpty>
+	</select>
+	
+	
+	<!-- 과제평가 가감점 상세내용을 조회 -->
+	<select id="kr.go.ntis.ev.mgnt.adsub.PjtFnerAdsubMgnt.selectPjtFnerAdsubMgntInfo" resultClass="egovMap" parameterClass="pjtFnerAdsubMgntVO">
+		SELECT
+		      A.ADSUB_MGNT_NO
+		    , A.ADSUB_SLCT_CD
+		    , (SELECT CD_NM FROM EV_PJT_ASSMT_HIST_INFO_CD B WHERE GRP_CD = 'ER001' AND CD = A.ADSUB_SLCT_CD) AS ADSUB_SLCT_CD_NM
+		    , A.ADSUB_ITEM	    
+		    , A.ADSUB_DES
+		    , FNC_GET_ADSUB_TRGT(A.ADSUB_MGNT_NO) AS ADSUB_TRGT_CD_NM
+		    , A.ADSUB_APPL_ORG_SLCT_CD
+		    , (SELECT CD_NM FROM EV_PJT_ASSMT_HIST_INFO_CD B WHERE GRP_CD = 'ER002' AND CD = A.ADSUB_APPL_ORG_SLCT_CD) AS ADSUB_APPL_ORG_SLCT_CD_NM  
+		    , A.ADSUB_GRANT_DES
+		    , A.ADSUB_APPL_STAN_DT_SLCT_CD
+		    , (SELECT CD_NM FROM EV_PJT_ASSMT_HIST_INFO_CD B WHERE GRP_CD = 'ER003' AND CD = A.ADSUB_APPL_STAN_DT_SLCT_CD) AS ADSUB_APPL_STAN_DT_SLCT_CD_NM
+		    , A.ADSUB_APPL_PROD_DES
+		    , A.ADSUB_EXAM_DES
+		    , A.NOTE
+		FROM
+			EV_PJT_FNER_ADSUB_CD A
+		WHERE
+			A.ADSUB_MGNT_NO = #adsubMgntNo#
+	</select>
+	
+	
+	<!-- 과제평가 가감점 등록 -->
+	<insert id="kr.go.ntis.ev.mgnt.adsub.PjtFnerAdsubMgnt.insertPjtFnerAdsubMgntInfoProc"  parameterClass="pjtFnerAdsubMgntVO" >
+		<selectKey keyProperty="adsubMgntNo" resultClass="String" >
+			SELECT LPAD(SEQ_ADSUB_MGNT_NO.NEXTVAL, 2, '0') FROM DUAL
+		</selectKey>
+		
+		<!-- 가감점 코드 테이블 등록 -->
+		INSERT INTO EV_PJT_FNER_ADSUB_CD(
+			  ADSUB_MGNT_NO
+			, ADSUB_SLCT_CD
+			, ADSUB_ITEM
+			, ADSUB_DES
+			, ADSUB_APPL_ORG_SLCT_CD
+			, ADSUB_GRANT_DES
+			, ADSUB_APPL_STAN_DT_SLCT_CD
+			, ADSUB_APPL_PROD_DES
+			, ADSUB_EXAM_DES
+			, NOTE
+		) VALUES (
+			  #adsubMgntNo#
+			, #adsubSlctCd#
+			, #adsubItem#
+			, #adsubDes#
+			, #adsubApplOrgSlctCd#
+			, #adsubGrantDes#
+			, #adsubApplStanDtSlctCd#
+			, #adsubApplProdDes#
+			, #adsubExamDes#
+			, #note#
+		)
+		
+	</insert>
+	
+	
+	
+	<!-- 과제평가 가감점 수정 -->
+	<update id="kr.go.ntis.ev.mgnt.adsub.PjtFnerAdsubMgnt.updatePjtFnerAdsubMgntInfoProc"  parameterClass="pjtFnerAdsubMgntVO">
+		UPDATE EV_PJT_FNER_ADSUB_CD
+		SET
+		      ADSUB_SLCT_CD               = #adsubSlctCd#                   
+			, ADSUB_ITEM                = #adsubItem#                    
+			, ADSUB_DES                   = #adsubDes#                      
+			, ADSUB_APPL_ORG_SLCT_CD      = #adsubApplOrgSlctCd#            
+			, ADSUB_GRANT_DES             = #adsubGrantDes#                 
+			, ADSUB_APPL_STAN_DT_SLCT_CD  = #adsubApplStanDtSlctCd#         
+			, ADSUB_APPL_PROD_DES         = #adsubApplProdDes#              
+			, ADSUB_EXAM_DES              = #adsubExamDes#                  
+			, NOTE                        = #note#                          
+		WHERE
+		    ADSUB_MGNT_NO = #adsubMgntNo#
+	</update>
+	
+	<!-- 과제평가 가감점 삭제 -->
+	<delete id="kr.go.ntis.ev.mgnt.adsub.PjtFnerAdsubMgnt.deletePjtFnerAdsubMgntInfoProc"  parameterClass="pjtFnerAdsubMgntVO">
+		BEGIN
+
+			DELETE FROM EV_PJT_FNER_ADSUB_TRGT
+			WHERE
+			    ADSUB_MGNT_NO = #adsubMgntNo#;
+			
+					
+			DELETE FROM EV_PJT_FNER_ADSUB_CD
+			WHERE
+			    ADSUB_MGNT_NO = #adsubMgntNo#;
+			    
+		END;
+	</delete>
+	
+	
+	<!-- 가감점 대상 조회 -->
+	<select id="kr.go.ntis.ev.mgnt.adsub.PjtFnerAdsubMgnt.selectPjtFnerAdsubTrgtProc" resultClass="egovMap" parameterClass="Map">
+		SELECT
+			ADSUB_TRGT_CD
+		FROM 
+			EV_PJT_FNER_ADSUB_TRGT
+		WHERE
+			ADSUB_MGNT_NO = #adsubMgntNo#
+		ORDER BY 1
+	</select>	
+	
+	<!-- 가감점 대상 등록 -->
+	<insert id="kr.go.ntis.ev.mgnt.adsub.PjtFnerAdsubMgnt.insertPjtFnerAdsubTrgtProc"   parameterClass="Map" >
+		INSERT INTO EV_PJT_FNER_ADSUB_TRGT(
+		      ADSUB_MGNT_NO
+		    , ADSUB_TRGT_CD
+		) VALUES (
+			  #adsubMgntNo#
+			, #adsubTrgtCd#		    
+		)
+	</insert>
+	
+	<delete id="kr.go.ntis.ev.mgnt.adsub.PjtFnerAdsubMgnt.deletePjtFnerAdsubTrgtProc"   parameterClass="String" >
+		DELETE 
+		FROM 
+			EV_PJT_FNER_ADSUB_TRGT 
+		WHERE
+			ADSUB_MGNT_NO = #value# 
+	</delete>
+
+
+		
+</sqlMap>

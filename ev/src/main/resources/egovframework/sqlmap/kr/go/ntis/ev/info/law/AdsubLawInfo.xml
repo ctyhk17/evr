@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+
+<sqlMap namespace="kr.go.ntis.ev.info.law.AdsubLawInfo">
+
+	<!-- 가감점코드 목록 조회 -->
+	<select id="kr.go.ntis.ev.info.law.AdsubLawInfo.selectAdsubCdList" resultClass="egovMap">
+		SELECT
+		      A.ADSUB_SLCT_CD
+            , FNC_GET_FNER_CD_NM('ER001', A.ADSUB_SLCT_CD) AS ADSUB_SLCT_CD_NM
+		    , A.ADSUB_ITEM
+		    , A.ADSUB_DES
+		    , FNC_GET_ADSUB_TRGT(A.ADSUB_MGNT_NO) AS ADSUB_TRGT_CD_NM
+		    , A.ADSUB_APPL_ORG_SLCT_CD
+		    , FNC_GET_FNER_CD_NM('ER002', A.ADSUB_APPL_ORG_SLCT_CD) AS ADSUB_APPL_ORG_SLCT_CD_NM		    
+		    , A.ADSUB_GRANT_DES
+		    , A.ADSUB_APPL_STAN_DT_SLCT_CD
+		    , FNC_GET_FNER_CD_NM('ER003', A.ADSUB_APPL_STAN_DT_SLCT_CD) AS ADSUB_APPL_STAN_DT_SLCT_CD_NM
+		    , A.ADSUB_APPL_PROD_DES
+		FROM
+		    EV_PJT_FNER_ADSUB_CD A
+		WHERE
+			EXISTS (
+	        			SELECT 
+						    NULL 
+						FROM 
+						    EV_PJT_FNER_ADSUB_TRGT X
+						WHERE
+						    	X.ADSUB_MGNT_NO = A.ADSUB_MGNT_NO
+	        		)
+		ORDER BY 
+				              A.ADSUB_SLCT_CD ASC, A.ADSUB_ITEM ASC
+	</select>
+	
+	
+
+
+		
+</sqlMap>

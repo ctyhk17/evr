@@ -1,0 +1,12 @@
+@charset "utf-8";
+
+/* combo navigation*/
+
+span.combo {width:30px; height:30px; display:inline-block;.display:inline; margin-left:10px; position:relative; z-index: 100;}
+button.btn_combo {border:1px solid #dedede !important; background: url(../../../../images/th/2014/btn_combo.png) no-repeat center center; width: 30px; height: 30px; cursor: pointer; text-indent: -9999999px; vertical-align:middle; }
+
+
+span.combo ul.combo_nav {position:absolute; left:0; top:100%; .top:34px; background-color: #fff; box-shadow: 1px 1px 1px #595959; width:100px;}
+span.combo ul.combo_nav li {line-height: 30px;}
+span.combo ul.combo_nav li a {font-size:13px; display: block; height: 100%; padding-left:10px; border:1px solid #dedede;margin-bottom: -1px; overflow: hidden;}
+span.combo ul.combo_nav li a:hover {background-color: #ccc; color:#fff;}

@@ -1,0 +1,63 @@
+@charset "utf-8";
+/* CSS Document */
+
+hr {margin:30px 0;}
+h3 {margin-top:30px !important; margin-bottom:10px !important;}
+
+body#temp {
+	background-color: #fff;
+	background-image: url(../../../../images/th/2016/mainbgimg.jpg);
+	background-position: center 0px;
+	background-repeat: no-repeat;
+	margin: 0;
+	line-height:1;
+	font-size:100%;
+}
+
+#temp #wrap {margin: 0; max-width:100%; min-width: 980px;clear: none;float: none;height:auto;   }
+
+/*현황통계 배경 이미지*/
+
+#temp .tempHead {position: relative; top:0px; /*background-image: url(../../../../images/th/2014/temp_logo.png);	background-position: left top;	background-repeat: no-repeat;*/	height:67px;	max-width: 1090px;	min-width: 980px; width:990px;	margin:0 auto;}
+
+#temp .tempHead.main{ height:297px; background-image:none;}
+	
+#temp .tempHead h1 {font-weight: normal;	font-size: 27px;	color: #fff; position: absolute;	left:0px;	top: 0px; display: inline; padding-bottom:6px;/* ie7*/	line-height: 28px;}
+#temp .tempHead h1 > a {color:#fff;}	
+#temp .pageBox {position: relative; 	background-color: #fff;width: 100%;	min-with:800px; min-height:900px;overflow: hidden;}
+#temp .pageBox .odd {margin: 0px auto;	width:100%;	padding:40px 0; clear:both;}
+#temp .pageBox .even {margin: 0px auto; width:100%;	background-color:#e5e9ec; padding:40px 0;  clear:both;}
+#temp .tempHead .nav {position:absolute; left:290px; top:18px;}
+#temp .tempHead .nav a {color:#fff; padding:0 15px !important; border-left:0px solid #85cce7; display:inline-block; font-size:17px;}
+
+/* 2016-09-20 개발팀 추가 */
+.navOn { border-radius:20px; background-color:#204d60; height:22px;}
+
+#temp .tempHead .nav a:hover{ border-radius:20px; background-color:#204d60; height:22px;}
+#temp textarea{border:1px solid #ccc; padding:5px 12px;}
+#temp input[type=text] {border:0; margin:0; text-indent:10px; .text-indent:0px !important; border-top:1px solid #b2b8bc;  border:1px solid #ccc; background-color:#fff; line-height:28px; height:28px }
+#temp select {border:1px solid #ccc; height:30px;padding:3px 5px 5px 5px; color:#595959; font-size:14px; }
+#temp option {vertical-align:middle; padding:3px 10px;}
+
+#temp .page_header {border-bottom:3px solid #ccc;padding-bottom:10px; margin-bottom:20px;}
+#temp .page_header>h2 {font-size:27px; line-height:30px !important; display:inline; padding:0; vertical-align:middle; border:none;}
+#temp .page_header>h3 {font-size:21px; line-height:30px !important;  color:#000; display:inline; padding:0; vertical-align:middle; border:none; }
+#temp label {font-size:14px;}
+#temp input[type=checkbox] , #temp input[type=radio] {margin-right:5px;}
+
+#temp h3 {font-size:21px; line-height:30px !important;  color:#000; padding:0; vertical-align:middle; border:none;}
+
+#temp p {margin:10px 0 30px 0;}
+
+
+
+
+
+
+
+
+
+
+#temp .page_header1 {padding-bottom:10px; margin-bottom:0px;}
+#temp .page_header1>h3 {font-size:21px; line-height:30px !important;  color:#000; padding:0; vertical-align:middle; border:none;margin-top: 0px;}
+#temp .page_header1>p {margin:0px 0 0px 0;}

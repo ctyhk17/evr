@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+
+<sqlMap namespace="kr.go.ntis.ev.cmn.Common">
+	
+
+	<!-- 과제평가이력정보 코드 목록을 조회 -->
+	<select id="kr.go.ntis.ev.cmn.Common.selectPjtFnerCdList" resultClass="egovMap" parameterClass="String">
+		SELECT
+		      B.CD
+		    , B.CD_NM
+		FROM
+		    EV_PJT_ASSMT_HIST_INFO_GRP_CD A,
+		    EV_PJT_ASSMT_HIST_INFO_CD B
+		WHERE
+		    A.GRP_CD = B.GRP_CD
+		    AND A.USE_YN = 'Y'
+		    AND B.USE_YN = 'Y'    
+		    AND A.GRP_CD = #value#
+	</select>
+	
+	<!-- 기준년도 조회 -->
+	<select id="kr.go.ntis.ev.cmn.Common.selectStanYrList" resultClass="egovMap" parameterClass="String">
+		SELECT 
+		    STAN_YR 
+		FROM 
+		    GLOBAL.SH_PROG_INFO
+		GROUP BY 
+		    STAN_YR
+		ORDER BY 
+		    STAN_YR DESC
+	</select>
+	
+	
+	<!-- 공통코드 조회 -->
+	<select id="kr.go.ntis.ev.cmn.Common.selectCmnCdList" resultClass="egovMap" parameterClass="String">
+		SELECT 
+		      CD
+		    , CD_NM     
+		FROM 
+		    GLOBAL.TB_SYSTEM_CD 
+		WHERE 
+				STD_CD_YN = 'Y'
+		    AND GRP_CD = #value#    
+		ORDER BY 
+		    CD_NM ASC
+	</select>
+	
+	
+	<!-- 신 부처코드 조회 -->
+	<select id="kr.go.ntis.ev.cmn.Common.getNewDeptCdList" resultClass="egovMap" parameterClass="String">
+		SELECT 
+		      CD
+		    , CD_NM     
+		FROM 
+		    GLOBAL.TB_SYSTEM_CD 
+		WHERE 
+		    	GRP_CD = 'GT040'    
+		    AND SYSDATE BETWEEN TO_DATE(OPTION1, 'YYYYMMDD') AND TO_DATE(OPTION2,'YYYYMMDD')
+		ORDER BY 
+		    CD_NM ASC
+	</select>
+	
+	
+	<!-- 구 부처코드 조회 -->
+	<select id="kr.go.ntis.ev.cmn.Common.getOldDeptCdList" resultClass="egovMap" parameterClass="String">
+		SELECT 
+		      CD
+		    , CD_NM     
+		FROM 
+		    GLOBAL.TB_SYSTEM_CD 
+		WHERE 
+		    GRP_CD = 'GT041'    
+		    AND TO_DATE(OPTION1, 'YYYYMMDD') <![CDATA[>=]]> TO_DATE('20080101','YYYYMMDD')
+		ORDER BY 
+		    CD_NM ASC
+	</select>
+	
+	
+	
+	
+	
+	
+		   
+		
+</sqlMap>

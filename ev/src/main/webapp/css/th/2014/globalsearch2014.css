@@ -1,0 +1,96 @@
+@charset "utf-8";
+
+	
+/*  global search 2014 */
+
+
+
+img#search_tab {
+    position: absolute;
+    right: 10px;
+    bottom: -30px;
+    display: none;
+}
+
+#n_searchwrap {
+    width: 100%;
+    background-color: #6d6d6d;
+    border-top: 3px solid #000;
+    border-bottom: 3px solid #000;
+    height: 100px;
+    padding: 0;
+    margin-bottom: 30px;
+    left: 0;
+    top: 78px;
+    overflow: hidden;
+    display: none;
+    position: fixed;
+    z-index: 7;
+}
+
+#n_searchwrap .n_searchwrap_in {
+    width: 900px;
+    text-align: center;
+    margin: 27px auto;
+    overflow: hidden;
+}
+
+#n_searchwrap input.main_search {
+    border: 3px solid #fff !important;
+    border-right: 0;
+    width: 400px !important;
+    height: 39px !important;
+    line-height: 39px !important;
+    padding-left: 10px;
+    font-size: 16px;
+    color: #000;
+    background-color: #fff !important;
+}
+
+#n_searchwrap input.btn_search_main {
+    background: url(../../../../images/th/2014/btn_searchmain.png) no-repeat left top;
+    width: 46px;
+    height: 45px;
+    border: 0;
+    cursor: pointer;
+    text-indent: -5000px;
+}
+
+#n_searchwrap input.btn_search_main:hover {
+    background-position: left bottom;
+}
+
+#n_searchwrap a.adv {
+    color: #fff;
+    padding-left: 30px;
+}
+
+#n_searchwrap a.adv:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.ntis_global_search {
+    background: transparent !important;
+    border: 1px solid #ccc !important;
+    color: #fff !important;
+    border-radius: 3px !important;
+    cursor: pointer !important;
+    font-size: 14px !important;
+    vertical-align: middle !important;
+    line-height: 42px !important;
+    display: inline-block !important;
+    margin: 0 1px 0 0 !important;
+    padding: 0 15px!important;
+    text-align: center !important;
+    *height: 45px;
+    *line-height: 45px;
+    margin-left: 10px !important;
+    *overflow: visible;
+}
+
+.ntis_global_search:hover {
+    text-decoration: none!important;
+    border: 1px solid #fff !important;
+    color: #fff !important;
+}}

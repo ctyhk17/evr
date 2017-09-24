@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+
+<sqlMap namespace="kr.go.ntis.ev.mgnt.log.PjtAssmtHistInfoLog">
+
+	
+
+
+
+	
+
+	<typeAlias  alias="pjtAssmtHistInfoLogVO" type="kr.go.ntis.ev.mgnt.log.service.PjtAssmtHistInfoLogVO"/>
+	
+	
+
+	<!-- 과제평가 로그 목록을 조회 -->
+	<select id="kr.go.ntis.ev.mgnt.log.PjtAssmtHistInfoLog.selectPjtAssmtHistInfoLogList" resultClass="egovMap" parameterClass="pjtAssmtHistInfoLogVO">
+	
+		SELECT
+		      A.SEQ
+		    , A.USER_ID
+		    , A.USER_NM
+		    , A.CONN_DT
+		    , TO_CHAR(A.CONN_DT, 'YYYY-MM-DD HH24:MI:SS') AS CONN_DT_MASK
+		    , A.CONN_IP
+		    , A.CONN_SLCT
+		    , DECODE(A.CONN_SLCT, '1', '과제', '2', '평가위원') AS CONN_SLCT_NM
+		    , A.MENU_NM
+		    , A.USER_DFN1
+		FROM
+		(
+		    SELECT
+		          ROWNUM AS IDX
+		        , A.SEQ
+			    , A.USER_ID
+			    , A.USER_NM
+			    , A.CONN_DT
+			    , A.CONN_IP
+			    , A.CONN_SLCT
+			    , A.MENU_NM
+			    , A.USER_DFN1
+		    FROM
+		    (
+	            SELECT
+				      A.SEQ
+				    , A.USER_ID
+				    , A.USER_NM
+				    , A.CONN_DT
+				    , A.CONN_IP
+				    , A.CONN_SLCT
+				    , A.MENU_NM
+				    , A.USER_DFN1
+				FROM
+				    EV_PJT_ASSMT_HIST_INFO_LOG A
+				WHERE
+					1=1
+					<isNotEmpty property="searchUserId">
+						AND A.USER_ID = #searchUserId#
+					</isNotEmpty>
+					<isNotEmpty property="searchUserNm">
+						AND A.USER_NM = #searchUserNm#
+					</isNotEmpty>
+					
+					<isNotEmpty property="searchConnDtFrom">
+						<isNotEmpty property="searchConnDtTo">
+							AND A.CONN_DT BETWEEN TO_TIMESTAMP(#searchConnDtFrom#, 'yyyy-mm-dd') AND TO_TIMESTAMP(#searchConnDtTo#, 'yyyy-mm-dd') + INTERVAL '1' DAY
+                      	</isNotEmpty>
+                      	<isEmpty property="searchConnDtTo">
+                      		AND A.CONN_DT <![CDATA[>=]]> TO_TIMESTAMP(#searchConnDtFrom#, 'yyyy-mm-dd') 
+                      	</isEmpty>
+					</isNotEmpty>
+					<isEmpty property="searchConnDtFrom">
+                      	<isNotEmpty property="searchConnDtTo">
+                      		AND A.CONN_DT <![CDATA[<]]> TO_TIMESTAMP(#searchConnDtTo#, 'yyyy-mm-dd') + INTERVAL '1' DAY
+                      	</isNotEmpty>
+					</isEmpty>
+                      
+					<isNotEmpty property="searchConnIp">
+						AND A.CONN_IP = #searchConnIp#
+					</isNotEmpty>
+					<isNotEmpty property="searchConnSlct">
+						AND A.CONN_SLCT  = #searchConnSlct#
+					</isNotEmpty>
+		        ORDER BY 
+		              A.SEQ DESC
+		    ) A
+		) A
+		WHERE
+				1=1
+		    AND A.IDX <![CDATA[>]]> #firstIndex# 
+		    AND A.IDX <![CDATA[<=]]> #lastIndex#	
+		    
+		    
+		    
+	</select>
+	
+	<!-- 과제평가 로그 목록 갯수를 조회 -->
+	<select id="kr.go.ntis.ev.mgnt.log.PjtAssmtHistInfoLog.selectPjtAssmtHistInfoLogListTotCnt" resultClass="int" parameterClass="pjtAssmtHistInfoLogVO">
+		SELECT
+			COUNT(1) AS TOTCNT
+        FROM   
+		    EV_PJT_ASSMT_HIST_INFO_LOG A
+		WHERE
+			1=1
+			<isNotEmpty property="searchUserId">
+				AND A.USER_ID = #searchUserId#
+			</isNotEmpty>
+			<isNotEmpty property="searchUserNm">
+						AND A.USER_NM = #searchUserNm#
+					</isNotEmpty>
+			
+			<isNotEmpty property="searchConnDtFrom">
+				<isNotEmpty property="searchConnDtTo">
+					AND A.CONN_DT BETWEEN TO_TIMESTAMP(#searchConnDtFrom#, 'yyyy-mm-dd') AND TO_TIMESTAMP(#searchConnDtTo#, 'yyyy-mm-dd') + INTERVAL '1' DAY
+                    	</isNotEmpty>
+                    	<isEmpty property="searchConnDtTo">
+                    		AND A.CONN_DT <![CDATA[>=]]> TO_TIMESTAMP(#searchConnDtFrom#, 'yyyy-mm-dd') 
+                    	</isEmpty>
+			</isNotEmpty>
+			<isEmpty property="searchConnDtFrom">
+                    	<isNotEmpty property="searchConnDtTo">
+                    		AND A.CONN_DT <![CDATA[<]]> TO_TIMESTAMP(#searchConnDtTo#, 'yyyy-mm-dd') + INTERVAL '1' DAY
+                    	</isNotEmpty>
+			</isEmpty>
+                    
+			<isNotEmpty property="searchConnIp">
+				AND A.CONN_IP = #searchConnIp#
+			</isNotEmpty>
+			<isNotEmpty property="searchConnSlct">
+				AND A.CONN_SLCT  = #searchConnSlct#
+			</isNotEmpty>
+	</select>
+	
+	
+	<!-- 과제평가 로그 상세내용을 조회 -->
+	<select id="kr.go.ntis.ev.mgnt.log.PjtAssmtHistInfoLog.selectPjtAssmtHistInfoLogInfo" resultClass="egovMap" parameterClass="pjtAssmtHistInfoLogVO">
+		 SELECT
+		      X.SEQ
+		    , X.USER_ID
+		    , X.USER_NM
+		    , X.CONN_DT
+		    , TO_CHAR(X.CONN_DT, 'YYYY-MM-DD HH24:MI:SS') AS CONN_DT_MASK
+		    , X.CONN_IP
+		    , X.CONN_SLCT
+		    , DECODE(X.CONN_SLCT, '1', '과제', '2', '평가위원') AS CONN_SLCT_NM
+		    , X.MENU_NM
+		    , X.USER_DFN1
+		    , CASE
+		    	WHEN X.CONN_SLCT = '1' THEN 
+			    	(
+			    		SELECT
+						      B.KOR_PJT_NM
+						FROM
+						    GLOBAL.SH_PROG_INFO A,     
+						    GLOBAL.SH_PJT_MAIN B,      
+						    GLOBAL.SH_PJT_FNER D
+						WHERE
+						        A.SRC_ORG_ID = B.SRC_ORG_ID     
+						    AND A.BZ_ID      = B.BDGT_PROG_CD   
+						    AND A.STAN_YR    = B.STAN_YR        
+						    AND B.PJT_ID     = D.PJT_ID
+						    AND A.DATA_MODIFY_SLCT != 'D'
+						    AND B.PJT_ID = X.USER_DFN1 
+			    	)
+				WHEN X.CONN_SLCT = '2' THEN 
+			    	(
+			    		SELECT      
+						     A.HM_NM
+						FROM
+						    HURIMS_MAN.HURIMS_MAN_DATA A    
+						WHERE
+						    A.REG_NO = X.USER_DFN1 
+			    	)			    	
+		      END AS USER_DFN1_DES
+		FROM
+		    EV_PJT_ASSMT_HIST_INFO_LOG X
+		WHERE
+			SEQ = #seq#
+	</select>
+	
+	
+	<!-- 로그 등록 -->
+	<insert id="kr.go.ntis.ev.mgnt.log.PjtAssmtHistInfoLog.insertPjtAssmtHistInfoLogInfoProc"   parameterClass="Map" >
+		INSERT INTO EV_PJT_ASSMT_HIST_INFO_LOG(
+		      SEQ
+		    , USER_ID
+		    , USER_NM
+		    , CONN_DT
+		    , CONN_IP
+		    , CONN_SLCT
+		    , USER_DFN1
+		) VALUES (
+		      SEQ_LOG.NEXTVAL
+		    , #userId#
+		    , #userNm#
+		    , SYSTIMESTAMP
+		    , #connIp#
+		    , #connSlct#
+		    , #userDfn1# 
+		)
+	</insert>
+	
+	
+
+		
+</sqlMap>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<bean name="propertiesService" class="egovframework.rte.fdl.property.impl.EgovPropertyServiceImpl" destroy-method="destroy">
+		<property name="properties">
+	        <map>
+	        
+	        	<!-- 페이징 관련 설정 -->
+	        	<entry key="pageSize" value="10"/>
+	        	<entry key="recordCountPerPage" value="10"/>
+	        	
+	        	
+	        	
+	        	<!-- SSO 관련 설정 -->
+	        	<entry key="NLS_DOMAIN" value=".ntis.go.kr"/>
+	        	<entry key="authHost" value="sso2.ntis.go.kr"/>
+	        	
+	        	<!--  이형부서명 검색 관련 설정 -->
+	        	<entry key="horgApiUrl" value="https://cls.ntis.go.kr/horg/1.0/api.do" />
+	        	<entry key="apprvKey"   value="V9U0toslIUmTt8bM6hjY0kKRU8ImrHA9L6SDSg2nKJE=" />
+	        	
+	        </map>
+		</property>
+	</bean>
+	
+</beans>	

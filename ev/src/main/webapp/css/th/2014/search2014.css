@@ -1,0 +1,243 @@
+@charset "utf-8";
+
+	
+/*  global search 2014 */
+
+/*통합검색*/
+
+
+#searchmain {	background-color: #6d6d6d;
+	/*background-image: url(../../../../images/th/2014/smart03_bg.jpg);
+	background-position: center 0px;
+	background-repeat: no-repeat;*/
+	margin: 0;
+	font-size:100%}
+
+
+#searchmain_wrap {margin: 0 auto;max-width:100%; min-width: 980px; clear: none; }
+
+.searchpageBox {background-color: #fff;  width: 100%; overflow:hidden;}
+
+
+.ntis_search {position:relative; max-width: 980px;  margin:0 auto; overflow: hidden; padding-top:120px; }
+.ntis_search h2 { width:163px; height:120px; border-left:1px solid #ccc;text-align:center; position:absolute;border-bottom:1px solid #ccc;  }
+.ntis_search h2 a {display:block; height:100%; font-size:16px; vertical-align:text-bottom;}
+.ntis_search h2.search01 {background:url(../../../../images/th/2014/search01.png) no-repeat center 25px;left:0; top:0;}
+.ntis_search h2.search02 {background:url(../../../../images/th/2014/search02.png) no-repeat center 30px;left:163px; top:0;}
+.ntis_search h2.search03 {background:url(../../../../images/th/2014/search03.png) no-repeat center 30px;left:326px; top:0;}
+.ntis_search h2.search04 {background:url(../../../../images/th/2014/search04.png) no-repeat center 20px;left:489px; top:0;}
+.ntis_search h2.search05 {background:url(../../../../images/th/2014/search05.png) no-repeat center 20px;left:652px; top:0;}
+.ntis_search h2.search06 {border-right:1px solid #ccc; background:url(../../../../images/th/2014/search06.png) no-repeat center 30px;left:815px; top:0;}
+.ntis_search h2 span {font-size:14px; height:16px; line-height:16px; color:#000; width:100%; display:block;position:absolute; left:0;}
+.ntis_search h2 span.label {bottom:30px;}
+.ntis_search h2 span.result_num {bottom:10px;}
+.ntis_search h2.on, .ntis_search h2:hover {border-bottom:5px solid #f00; height:116px; }
+.ntis_search h2.on > a span.label, .ntis_search h2:hover > a span.label {bottom:26px;}
+.ntis_search h2.on > a span.result_num, .searchHead .ntis_search h2:hover > a span.result_num {bottom:6px;}
+
+.ntis_search h2.disable a {background-color: #fff; opacity:.3; filter:alpha(opacity=30); cursor: unset;}
+.ntis_search h2.disable:hover  {height:120px !important; border-bottom:1px solid #ccc !important;}
+.ntis_search h2.disable:hover  span.label {bottom:30px;}
+.ntis_search h2.disable:hover  span.result_num {bottom:10px;}
+.ntis_search h2.disable span {color: #ccc;}
+
+a.result_more {font-size:12px; padding-left:5px;}
+
+.list_box {border-bottom:1px solid #ccc; padding-top:30px; position: relative; overflow: hidden;}
+.list_box h3.search02_icon {background:url(../../../../images/th/2014/search02.png) no-repeat left top; padding-left:60px;padding-bottom: 10px; height:35px; line-height: 35px;} /*사업*/
+.list_box h3.search03_icon {background:url(../../../../images/th/2014/search03.png) no-repeat left top; padding-left:50px;padding-bottom: 10px; height:35px; line-height: 35px;} /*과제*/
+.list_box h3.search04_icon {background:url(../../../../images/th/2014/search04.png) no-repeat left top; padding-left:60px;padding-bottom: 10px; height:50px; line-height: 50px; } /*참여인력*/
+.list_box h3.search05_icon {background:url(../../../../images/th/2014/search05.png) no-repeat -14px top; padding-left:60px;padding-bottom: 10px; height:47px; line-height: 47px;} /*시설장비*/
+.list_box h3.search06_icon {background:url(../../../../images/th/2014/search06.png) no-repeat left top; padding-left:45px;padding-bottom: 0px; height:45px; line-height: 45px; } /*성과*/
+
+.ntis_search h3 span.result_num {font-size:16px; padding-left:5px;}
+
+.ntis_search span.help {border:1px solid #ccc; background-color:#fff; border-radius:30px; width:20px;line-height:20px; height:20px; font-size:18px; color:#595959; display:inline-block;  text-align:center; position:relative; cursor:pointer; }
+.ntis_search span.help:hover {border:1px solid #FBAB00;background-color:#FBAB00;color:#fff;}
+.ntis_search span.help>span {display:none;  width:500px; border:1px solid #555; font-size:14px; font-weight:normal; line-height:20px !important;  padding:10px; background-color:#fff; text-align:left; color:#595959;}
+
+.ntis_search span.help:hover>span {display:block;  position: absolute;left:70%; bottom:50%;  }
+
+.ntis_search span.slash {font-size:12px !important; color:#ccc; padding:0 3px;}
+
+.ntis_search .resultBox {margin:0px 0px 30px 0px; }
+.ntis_search .resultBox span {color:#006837; font-size: 14px;}
+.ntis_search .search_word {color:inherit !important; font-size: inherit !important; border-bottom: 1px dashed #f00; display: inline-block; padding:0 3px; line-height: inherit !important; }
+.ntis_search .resultBox p.box {padding:0; color:#595959; line-height: 1.7em; font-size: 13px;}
+.ntis_search .resultBox table.box {padding:0; color:#595959; line-height: 1.7em; font-size: 13px;padding:20px;border:1px solid #ccc; margin:20px 0;}
+.ntis_search .resultBox table.box td {padding:30px;}
+
+
+.ntis_search h4.service_label {margin:20px 0 10px 0 !important; font-size:18px;}
+.ntis_search .resultBox img {margin-left: 3px; vertical-align: middle;}
+.ntis_search .resultBox a {color:#0071bb; font-size: 14px;text-decoration: none;}
+.ntis_search .resultBox a:hover {text-decoration: underline;}
+
+
+h4.service_label.roots1 {background: url("../../../../images/th/2014/roots_simbol1.png") no-repeat left top; padding-left:60px; line-height: 32px;}
+h4.service_label.roots2 {background: url("../../../../images/th/2014/roots_simbol2.png") no-repeat left top; padding-left:55px; line-height: 46px;}
+h4.service_label.roots3 {background: url("../../../../images/th/2014/roots_simbol3.png") no-repeat left top; padding-left:40px; line-height: 42px;}
+h4.service_label.roots4 {background: url("../../../../images/th/2014/roots_simbol4.png") no-repeat left top; padding-left:65px; line-height: 32px;}
+h4.service_label.roots5 {background: url("../../../../images/th/2014/roots_simbol5.png") no-repeat left top; padding-left:50px; line-height: 47px;}
+h4.service_label.roots6 {background: url("../../../../images/th/2014/roots_simbol6.png") no-repeat left top; padding-left:60px; line-height: 47px;}
+h4.service_label.roots7 {background: url("../../../../images/th/2014/roots_simbol7.png") no-repeat left top; padding-left:60px; line-height: 33px;}
+h4.service_label.roots8 {background: url("../../../../images/th/2014/roots_simbol8.png") no-repeat left top; padding-left:50px; line-height: 43px;}
+h4.service_label.roots9 {background: url("../../../../images/th/2014/roots_simbol9.png") no-repeat left top; padding-left:60px; line-height: 40px;}
+h4.service_label.roots10 {background: url("../../../../images/th/2014/roots_simbol10.png") no-repeat left top; padding-left:60px; line-height: 48px;}
+h4.service_label.roots11 {background: url("../../../../images/th/2014/roots_simbol11.png") no-repeat left top; padding-left:55px; line-height: 44px;}
+h4.service_label.roots12 {background: url("../../../../images/th/2014/roots_simbol12.png") no-repeat left top; padding-left:40px; line-height: 42px;}
+
+
+.ntis_search .hurims {padding-bottom:30px;}
+.ntis_search .hurims .resultBox {margin:0 !important;}
+
+.ntis_search .resultBox a.pms {color: rgb(85, 85, 85); font-size: 12px; font-weight: normal; text-decoration: none; margin-right: 20px; display: inline-block;}
+.ntis_search .resultBox a.pms:hover {text-decoration: underline;}
+
+.raw1 {padding-bottom:10px;}
+.raw1 .resultBox {margin:0 0 5px 0!important;}
+
+.ntis_search .orangebold {color: rgb(255, 153, 0); font-weight: bold;}
+
+
+
+
+.ntis_search span.more {
+	background: url("../../../../images/th/2014/result_more.gif") no-repeat left center; width:17px; height: 23px; color: rgb(119, 119, 119); padding-left:22px; font-size:11px; line-height: 1em;  vertical-align: middle; cursor: pointer; margin-left:5px; 
+}
+.ntis_search span.close {
+	background: url("../../../../images/th/2014/result_close.gif") no-repeat left center; width:17px;  height: 23px; color: rgb(119, 119, 119);padding-left:22px; font-size:11px;  line-height: 1em; vertical-align: middle; cursor: pointer; margin-left:5px;
+}
+.ntis_search span.more:hover {
+	text-decoration: underline;
+}
+.ntis_search span.close:hover {
+	text-decoration: underline;
+}
+.ntis_search .listmore {
+	padding: 7px 0px; text-align: right; margin: 0 10px 30px 10px; border-bottom:1px solid #ccc;
+}
+.ntis_search .listmore a {
+	color:#555; font-size: 12px; background:url(../../../../images/th/2014/arrow_blue_dot.gif) no-repeat right center;  padding-right:15px;
+}
+.ntis_search #clusterResultList ul {
+	list-style: none;
+}
+
+.related_wrap {border:1px solid #ccc; padding:20px;}
+.related {display:block; font-size:16px;color:#000;}
+.related label {font-size:14px; color:#595959;}
+.related label input[type=checkbox] {margin:0 3px 0 10px;}
+
+
+
+.sgroup2013 {
+	margin: 0px; border:0; font-size: 12px;display: block; border-collapse: collapse; border-top:1px  solid #ccc;
+}
+.sgroup2013 td {
+	padding: 5px 20px 5px 10px; border: 0px solid #ccc; height: 20px; text-align: left; font-size:14px; color:#999;
+}
+.sgroup2013 td a strong {
+	color: #01afee;
+}
+.sgroup2013 td a {
+	text-decoration:none;  border-bottom:1px solid #cecece; padding-bottom:2px;
+}
+.sgroup2013 td a:hover {
+	text-decoration: none;
+	border-bottom:1px solid #000;
+	color:#000;
+}
+
+.sgrouptable2013 {
+	margin: 20px 0px 0 0px;
+}
+.sgrouptable2013 th {
+	background:#f3f3f3; padding: 5px; border: 1px solid #ccc; line-height:30px; font-size: 16px; 
+}
+.sgrouptable2013 td {
+	padding: 5px; border: 1px solid #ccc;  text-align: left; vertical-align: top;font-size: 13px; 
+}
+.sgrouptable2013 input[type='checkbox'] {
+	margin:0 5px 3px 5px; vertical-align: middle; border:0 ;
+}
+.sgrouptable2013 ul {
+	border:0; list-style: none; margin: 0 0 5px 0; padding: 0px; text-align: left; overflow: hidden; background-image: none;
+}
+.sgrouptable2013 ul li {line-height:21px;}
+.sgrouptable2013 td img {margin:0 0 0 5px;}
+
+
+.searchsort2013 {
+	margin: 20px 0; padding: 5px 0px; text-align: right; border-bottom-color: rgb(206, 206, 206); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.searchsort2013 a {
+	color: rgb(119, 119, 119); font-size: 13px; vertical-align: middle;
+}
+.searchsort2013 span {
+	color: rgb(119, 119, 119); font-size: 13px; vertical-align: middle;
+}
+.searchsort2013 span.yousa {
+	background: url("../../../../images/th/2014/sort.gif") no-repeat left top; padding-left: 15px;
+}
+.searchsort2013 a.off.yousa {
+	background: url("../../../../images/th/2014/sort.gif") no-repeat left -50px; padding-left: 15px;
+}
+.searchsort2013 span.choisin {
+	background: url("../../../../images/th/2014/sort.gif") no-repeat left top; padding-left: 15px;
+}
+.searchsort2013 a.off.choisin {
+	background: url("../../../../images/th/2014/sort.gif") no-repeat left -50px; padding-left: 15px;
+}
+.searchsort2013 span.oreum {
+	background: url("../../../../images/th/2014/sort.gif") no-repeat left -100px; padding-left: 15px;
+}
+.searchsort2013 a.off.oreum {
+	background: url("../../../../images/th/2014/sort.gif") no-repeat left -200px; padding-left: 15px;
+}
+.searchsort2013 span.naerim {
+	background: url("../../../../images/th/2014/sort.gif") no-repeat left -250px; padding-left: 15px;
+}
+.searchsort2013 a.off.naerim {
+	background: url("../../../../images/th/2014/sort.gif") no-repeat left -150px; padding-left: 15px;
+}
+.searchsort2013 select {
+	color: rgb(85, 85, 85); font-size: 14px; margin-left: 10px; vertical-align: middle;
+}
+
+
+
+/* 과제관계보기 테이블 */
+.table7 {width: 100%; border-top:3px solid #cdcdcd; border-bottom:1px solid #cdcdcd; border-collapse: collapse; border-spacing: 0; margin-bottom:10px; }
+.table7 caption {display:none;  }
+.table7 thead th {padding: 6px 0;  color:#444; background:#f7f7f7; border-right:1px solid #cdcdcd;font-size:14px !important;  border-bottom:1px solid #cdcdcd; }
+.table7 tbody th { border-right:1px solid #cdcdcd; border-bottom:1px solid #cdcdcd;  text-align:left;   padding:0px 6px 0px 22px; color:#484848; }
+.table7 tbody td { border-right:1px solid #cdcdcd; text-align:center;  border-bottom:1px solid #cdcdcd; height:32px; vertical-align: middle; padding:0px 4px 0 4px; color:#484848; line-height: 1.7em;font-size:14px;}
+.table7 tbody .alignl {text-align:left; }
+.table7 tbody .alignr {text-align:right; }
+.table7 tbody .depthB td {background:#FAFAD2;   }
+.table7 tbody .depthB-1 td {background:#FAFAD2;   }
+.table7 tbody .depthB .sub  { padding: 0 2px 0 21px; text-align: left;  background:#FAFAD2 url(../../../../images/th/2014/depth_icon01.gif) no-repeat 8px 8px;  }
+.table7 tbody .depthB-1 .sub  { padding: 0 2px 0 21px; text-align: left; background:#FAFAD2 url(../../../images/th/fast/table02_th_bg02.png) no-repeat 6px 11px; }
+.table7 tbody .depthC td {background:#EBEBC0;   }
+.table7 tbody .depthC .sub  { padding: 0 2px 0 34px; text-align: left;  background:#EBEBC0 url(../../../images/th/fast/depth_icon02.gif) no-repeat 4px 7px;  }
+.table7 .bdr_0 {border-right:none; }
+.table7 tbody .sum  { background:#FFFAFA; font-weight: bold;}
+a.pms {color:#595959; text-decoration:none; display:inline-block; margin-right:20px; font-weight:normal; font-size:14px !important;padding-left:5px;}
+a.pms:hover {text-decoration:underline;}
+
+.listTob_box { margin:24px 0 6px; position: relative; }
+.listTob_box .rbutton{  position: absolute; top:0px; right:0px; }
+.listTob_box .topInfo { color:#565656; font-weight: bold; display: inline-block; height:24px; line-height: 2;   }
+.listTob_box .topInfo span { color:#777; font-weight: bold;    }
+.listTob_box .topInfo .resultText { color:#ff9900; font-weight: bold;    }
+
+.site_simbol {border:1px solid #dedede;border-radius:3px; float:left; margin:10px 0 0 0;}
+.site_simbol img {width:65px !important;}
+dl.ntis_site {margin:10px 0 0 120px; padding:0 0 20px 0; }
+dl.ntis_site dt {margin-top:10px;}
+dl.ntis_site dt a {font-size:18px; color:orange;}
+dl.ntis_site dd {font-size:14px; color:#595959;}
+
+.resultSearchBox {color:#fff; font-size:14px; width:300px; margin:15px auto; text-align: left;}
+.resultSearchBox input[type="checkbox"] {margin-right:7px; vertical-align: middle;}

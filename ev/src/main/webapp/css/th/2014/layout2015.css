@@ -1,0 +1,156 @@
+@charset "utf-8";
+
+/* float 및 text 정렬*/
+
+.fl {float:left !important;}
+.fr {float:right !important;}
+.tl {text-align:left !important;}
+.tc {text-align:center !important;}
+.tr {text-align:right !important;}
+.clearfloat { clear:both; height:0; font-size: 1px; line-height: 0px;} /* <br class="clearfloat" />로 사용 */
+
+.db {border-bottom:1px solid #ccc;} /* 특정 블록 요소에 하단 라인을 넣을때 사용 */
+
+	
+/*  layout 2014 */
+
+.body {
+	background-color: #0175a6;
+	line-height:1;
+	font-size:100%;
+}
+
+
+p {font-size:13px;}
+
+/* 서브페이지 글로벌 헤더 */
+.globalHead {position: relative;	height: 66px;	max-width: 1090px;	min-width: 980px;	width:990px; margin:0 auto;}
+.globalHead .g_nav {position: absolute;	right:80px;	top: 0px;	width: 700px;	margin: 0;	text-align:right;}
+.globalHead .g_nav a {display: inline-block;	color: #fff;	font-size: 16px;	padding-top:3px;	line-height:20px;}
+.globalHead .g_nav a:hover {color:#FF0;}
+.globalHead .g_nav a.menu {margin: 25px 20px 0 0;	width: 56px;	height: 19px;background: url(../../../../images/th/2014/menu.png) left bottom no-repeat;text-align: right;}
+.globalHead .g_nav span.search a {padding-top:2px;	line-height:20px;		width: 56px;	height: 19px;line-height:19px;	background: url(../../../../images/th/2014/search.png) left bottom no-repeat;	text-align: right;}
+.globalHead .g_nav span.search {margin: 25px 20px 0 0; position:relative; line-height:20px; width: 56px; display:inline-block;} 
+.globalHead .g_nav a.login {	margin: 25px 0px 0 0;	height: 19px;	background: url(../../../../images/th/2014/login.png) left 3px no-repeat;	text-align: left;	text-indent:22px;}
+.globalHead .logo {	position:absolute;	right:0;	top:0;	width: 50px;	height: 66px;	background: url(../../../../images/th/2014/ntislogo.gif) right top no-repeat;	text-indent:-10000px;	text-align:left !important;	}
+
+#servicemain {height:auto;border:1px solid #f00;} /*메인화면 헤더 세로폭*/
+
+.serviceHead {position: relative;}
+.serviceHead h1 {	font-weight: normal;	font-size: 27px;color: #fff;	position: absolute;	left: 100px;top: 32px;	display: inline;	.padding-bottom:6px;/* ie7*/	line-height: 28px;}
+.serviceHead h1 a {	color:#fff; 	font-size:inherit;display:block;}
+.serviceHead ul {	overflow: hidden;position: absolute;	right: 50px;	bottom: 20px;	width: 58.7%;	margin: 0;}
+.serviceHead ul li {	float: right;	display: inline-block;	color: #fff;	font-size: 16px;	margin-left: 24px;	line-height:16px;	.padding-bottom:2px;/* ie7*/}
+.serviceHead ul li img {	margin-top:4px;}
+	
+.pageBox {	position: relative; background-color: #fff;	width: 100%;	min-with:800px;height:auto;	overflow:hidden;	}
+
+.section1 {margin: 0 auto;max-width: 990px;min-width:980px;	border: 0px solid #f00;	margin: 35px auto;}
+.section1 h2 {	font-weight: normal;	font-size: 30px;	color: #000;	line-height: 30px;	padding-bottom: 16px;	border-bottom: 4px solid #706C6D;}
+
+.globalFoot {background-color: #fff;	clear:both;	overflow:hidden; width: 100%; border-top:solid 1px #ccc;}
+.globalFoot .footWrap{ 	max-width:990px;	margin:0 auto;	background-color:#4d4d4d;}
+.globalFoot .footMenu {	float: left;	font-size: 11px;	color: #555;	line-height: 45px;	margin-left:10px;}
+.globalFoot .footMenu a {font-size:11px; color: #555;}
+.globalFoot .footMenu a:hover {color:#000;}
+.globalFoot .copyright {float: right;font-size: 11px;color: #606060;line-height: 45px;margin-right:10px;}
+
+
+
+.popup_background {
+	-webkit-transition: all 0.3s 0.3s;
+		-moz-transition: all 0.3s 0.3s;
+			transition: all 0.3s 0.3s;
+}
+.popup_content,
+.popup_wrapper {
+	-webkit-transition: all 0.4s;
+		-moz-transition: all 0.4s;
+			transition: all 0.4s;
+}
+.popup_content {
+	-webkit-transform: translateX(0) translateY(-40%);
+		-moz-transform: translateX(0) translateY(-40%);
+			-ms-transform: translateX(0) translateY(-40%);
+				transform: translateX(0) translateY(-40%);
+}
+.popup_visible .popup_content {
+	-webkit-transform: translateX(0) translateY(0);
+		-moz-transform: translateX(0) translateY(0);
+			-ms-transform: translateX(0) translateY(0);
+				transform: translateX(0) translateY(0);
+}
+
+/*2016style*/
+
+.maintoptxt{position:absolute; top:100px; left:37px;}
+
+.maintopimage{width:461px; margin:0px 20px 3px 514px;}
+
+.mainbodywrap{width:100%; background:url(../../../../images/th/2016/pattern.gif);}
+.mainbody{width:990px; height:455px; margin:0 auto;}
+
+.mbox01{width:359px; margin-top:60px; float:left;position:relative;}
+
+.mbox01txt{width:322px; height:86px; font-size:13px; color:#fff; background-color:#6791b5; border-radius:10px 0px 0px 0px; padding:25px 10px 25px 25px; margin-top:10px; line-height:1.5em; font-family:'나눔고딕'; }
+
+.mbox01btn{width: 118px; height: 32px; color: #c0f70a; border: 1px solid #fff; font-size: 14px; line-height: 2.2em; padding-left: 20px; background: url(../../../../images/th/2016/btnarrow.png) no-repeat 98px 14px; position: absolute; left: 27px; top: 283px; font-family: '나눔고딕'; font-weight: 600;}
+.mbox01btn a:link{color: #c0f70a;}
+.mbox01btn a:hover{text-decoration:underline;}
+.mbox01btn a:visited{color: #c0f70a;}
+
+
+
+.mbox02{width:307px; height:338px; float:right; margin-top:60px; border:solid 1px #7ea3bc; border-right:none; background-color:#f3f3f3; font-family:'나눔고딕'; position:relative;}
+.mbox02 ul{margin-top:38px; margin-left:65px;}
+.mbox02 ul li.txt{font-size:15px; color:#aaa; line-height:1.3em; padding-top:24px;}
+.mbox02 ul li.title{font-size:20px; color:#206cb6;}
+.mboxbtn{width: 118px; height: 31px; color: #666; border: 1px solid #438ec5; font-size: 14px; line-height: 2.2em; padding-left: 20px; background: url(../../../../images/th/2016/btnarrow02.png) no-repeat 98px 12px; position: absolute; left: 67px; top: 272px; font-family: '나눔고딕'; font-weight: 600;}
+.mboxbtn a:link{color:#206cb6;}
+.mboxbtn a:visited{color:#206cb6;} 
+.mboxbtn a:hover{ text-decoration:underline;}
+.mboxbtn.box3{
+	position: absolute;
+	left: 51px;
+	top: 272px;
+}
+
+
+.mbox03{width:307px; height:338px; float:right; margin-top:60px; border:solid 1px #7ea3bc; background-color:#eee; position:relative;}
+.mbox03 ul{margin-top:40px; margin-left:50px;}
+.mbox03 ul li.title{font-size:20px; color:#206cb6; margin-top:17px;}
+.mbox03 ul li.txt{font-size:15px; color:#aaa; line-height:1.3em; padding-top:24px;}
+
+
+/*error page*/
+.errorbg{width:900px; margin:0 auto;  min-height:600px;}
+.errorimg{ float:left; padding-top:177px; margin-left:80px;}
+.errortxtwrap{ width:620px; float:left; padding-left:50px; padding-top:155px;}
+.errortxt01{font-size:50px; font-weight:600; color:#da5e45; padding:0 0 10px 0;}
+.fsize{font-size:30px; font-weight:600;}
+.errortxt02{font-size:30px; color:#333; font-weight:600; padding-bottom:20px;}
+.errortxt03{font-size:17px; color:#333; line-height:28px;}
+.errortxt03 span{color:#1f4dad;}
+.errortxtgo{font-size:18px; color:#009fe3; padding-top:20px; padding-bottom:40px; clear:both;}
+.errortxtgo img{vertical-align:baseline; padding-left:25px;}
+.errorboxtxt{padding:10px; width:91%; margin-top:30px; margin-bottom:20px; border:solid 1px #ccc; background-color:#f8f8f8; clear:both; border-radius:3px; font-size:13px; line-height:1.5em; text-align:center;}
+
+
+/*popup*/
+.popupwrap{width:100%; overflow:hidden;}
+.popuptopwrap{width:100%; background-color:#0090d9; height:64px; overflow:hidden;}
+.popupwrap h1{font-size:22px; color:#fff; background:url(../../../../images/th/2016/popupbl.gif) no-repeat 0 0; height:64px; padding-left:45px; font-weight:600; padding-top:16px; float:left;}
+.popuplogo{float:right;}
+.popupcon{padding:20px 36px; line-height:1.6em; font-size:14px;}
+.popupcon h2{font-size:20px; color:#000;  margin-bottom:18px; font-weight:500;}
+
+.popupbot{height:30px; background-color:#626262; color:#fff; text-align:right; padding-right:20px; padding-top:14px;}
+.popupbot a:link{color:#fff; text-decoration:none;}
+.popupbot a:hover{color:#fff; text-decoration:none;}
+/* 2016-09-28 추가*/
+.popupbot a:VISITED{color:#fff; text-decoration:none;}
+
+.popconbox{ border:solid 1px #ddd; padding:15px;}
+.popimg{padding:0 20px 0 0;}
+.poprighttxt{font-size:16px; font-weight:600; color:#383838; padding:10px 0 10px 20px; background-color:#f9f9f9; border-bottom:solid 1px #eee;}
+.poprighttxt span{font-size:15px; font-weight:500; color:#777;}

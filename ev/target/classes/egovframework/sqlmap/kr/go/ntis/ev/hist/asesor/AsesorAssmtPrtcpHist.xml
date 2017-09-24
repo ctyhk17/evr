@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+
+<sqlMap namespace="kr.go.ntis.ev.hist.asesor.AsesorAssmtPrtcpHist">
+
+	<typeAlias  alias="asesorAssmtPrtcpHistVO" type="kr.go.ntis.ev.hist.asesor.service.AsesorAssmtPrtcpHistVO"/>
+
+
+	<!-- 평가위원 평가참여이력 목록을 검색한다. -->
+	<select id="kr.go.ntis.ev.hist.asesor.AsesorAssmtPrtcpHist.selectAsesorAssmtPrtcpHistList" resultClass="egovMap" parameterClass="asesorAssmtPrtcpHistVO">
+	
+		SELECT
+              A.RN 
+            , A.RRNO
+            , A.ASESOR_HM_NM
+            , A.ORG_NM
+            , A.ORG_CLS  
+        FROM
+        (
+            SELECT
+                  ROWNUM AS IDX
+                , A.RN
+                , A.RRNO
+                , A.ASESOR_HM_NM
+                , A.ORG_NM
+                , A.ORG_CLS
+            FROM
+            (
+                SELECT
+                      ROWNUM AS RN
+                    , A.RRNO
+                    , A.ASESOR_HM_NM
+                    , A.ORG_NM
+                    , A.ORG_CLS                                  
+                FROM
+                (
+                    SELECT
+                    	  A.REG_NO AS RRNO
+                        , A.HM_NM  AS ASESOR_HM_NM
+                        , A.ORG_NM
+                        , A.ORG_CLS
+                        , A.SEX_GB
+                    FROM
+                        HURIMS_MAN.HURIMS_MAN_DATA A    
+                    WHERE
+                    	EXISTS (
+                    		SELECT NULL FROM GLOBAL.SH_PJT_ASESOR X
+                    		WHERE
+                    			X.RRNO = A.REG_NO
+                    			AND X.OP_CD = 'A'
+                    			<isNotEmpty property="searchPjtAssmtPrtcpYrFrom">
+		                        	<isNotEmpty property="searchPjtAssmtPrtcpYrTo">
+		                        		AND TO_DATE(X.PJT_ASSMT_PRTCP_YM||'01', 'YYYYMMDD') BETWEEN TO_DATE(#searchPjtAssmtPrtcpYrFrom#, 'YYYY-MM-DD') AND TO_DATE(#searchPjtAssmtPrtcpYrTo#, 'YYYY-MM-DD')
+		                        	</isNotEmpty>
+		                        	<isEmpty property="searchPjtAssmtPrtcpYrTo">
+		                        		AND TO_DATE(X.PJT_ASSMT_PRTCP_YM||'01', 'YYYYMMDD') <![CDATA[>=]]> TO_DATE(#searchPjtAssmtPrtcpYrFrom#, 'YYYY-MM-DD') 
+		                        	</isEmpty>
+		                        </isNotEmpty>
+		                        <isEmpty property="searchPjtAssmtPrtcpYrFrom">
+		                        	<isNotEmpty property="searchPjtAssmtPrtcpYrTo">
+		                        		AND TO_DATE(X.PJT_ASSMT_PRTCP_YM||'01', 'YYYYMMDD') <![CDATA[<=]]> TO_DATE(#searchPjtAssmtPrtcpYrTo#, 'YYYY-MM-DD')
+		                        	</isNotEmpty>
+		                        </isEmpty>
+                    	)
+                        <isNotEmpty property="searchAsesorHmNm">
+                        	AND A.HM_NM LIKE '%' || #searchAsesorHmNm# || '%'
+						</isNotEmpty>
+						<isNotEmpty property="searchBlngOrgNm">						
+							AND 
+							(
+								A.ORG_NM LIKE '%' || #searchBlngOrgNm# || '%'
+								<isNotEmpty property="searchBlngHOrgNm">
+								    OR A.ORG_NM IN
+								    <iterate property="searchBlngHOrgNm" conjunction="," open="(" close=")">
+								    	 #searchBlngHOrgNm[]#
+								    </iterate>
+							    </isNotEmpty>
+							)
+							
+						</isNotEmpty>
+                        <isNotEmpty property="searchGenderDivCd">
+                        	AND A.SEX_GB = #searchGenderDivCd#
+                        </isNotEmpty>
+                        <isNotEmpty property="searchRrno">
+                        	AND A.REG_NO LIKE '%' || #searchRrno# || '%'
+						</isNotEmpty>
+                    ORDER BY     
+                        A.HM_NM ASC   
+                ) A  
+                ORDER BY RN ASC
+            ) A
+        ) A
+        WHERE
+                1=1
+		    AND A.IDX <![CDATA[>]]> #firstIndex# 
+		    AND A.IDX <![CDATA[<=]]> #lastIndex#
+	</select>
+	
+	
+	
+	<!-- 평가위원 평가참여이력 목록 갯수를 조회한다 -->
+	<select id="kr.go.ntis.ev.hist.asesor.AsesorAssmtPrtcpHist.selectAsesorAssmtPrtcpHistListTotCnt" resultClass="int" parameterClass="asesorAssmtPrtcpHistVO">
+		SELECT      
+		  COUNT(1) AS TOTCNT
+		FROM
+                        HURIMS_MAN.HURIMS_MAN_DATA A    
+                    WHERE
+                    	EXISTS (
+                    		SELECT NULL FROM GLOBAL.SH_PJT_ASESOR X
+                    		WHERE
+                    			X.RRNO = A.REG_NO
+                    			AND X.OP_CD = 'A'
+                    			<isNotEmpty property="searchPjtAssmtPrtcpYrFrom">
+		                        	<isNotEmpty property="searchPjtAssmtPrtcpYrTo">
+		                        		AND TO_DATE(X.PJT_ASSMT_PRTCP_YM||'01', 'YYYYMMDD') BETWEEN TO_DATE(#searchPjtAssmtPrtcpYrFrom#, 'YYYY-MM-DD') AND TO_DATE(#searchPjtAssmtPrtcpYrTo#, 'YYYY-MM-DD')
+		                        	</isNotEmpty>
+		                        	<isEmpty property="searchPjtAssmtPrtcpYrTo">
+		                        		AND TO_DATE(X.PJT_ASSMT_PRTCP_YM||'01', 'YYYYMMDD') <![CDATA[>=]]> TO_DATE(#searchPjtAssmtPrtcpYrFrom#, 'YYYY-MM-DD') 
+		                        	</isEmpty>
+		                        </isNotEmpty>
+		                        <isEmpty property="searchPjtAssmtPrtcpYrFrom">
+		                        	<isNotEmpty property="searchPjtAssmtPrtcpYrTo">
+		                        		AND TO_DATE(X.PJT_ASSMT_PRTCP_YM||'01', 'YYYYMMDD') <![CDATA[<=]]> TO_DATE(#searchPjtAssmtPrtcpYrTo#, 'YYYY-MM-DD')
+		                        	</isNotEmpty>
+		                        </isEmpty>
+                    	)
+                        <isNotEmpty property="searchAsesorHmNm">
+                        	AND A.HM_NM LIKE '%' || #searchAsesorHmNm# || '%'
+						</isNotEmpty>
+						<isNotEmpty property="searchBlngOrgNm">						
+							AND 
+							(
+								A.ORG_NM LIKE '%' || #searchBlngOrgNm# || '%'
+								<isNotEmpty property="searchBlngHOrgNm">
+								    OR A.ORG_NM IN
+								    <iterate property="searchBlngHOrgNm" conjunction="," open="(" close=")">
+								    	 #searchBlngHOrgNm[]#
+								    </iterate>
+							    </isNotEmpty>
+							)
+							
+						</isNotEmpty>
+                        <isNotEmpty property="searchGenderDivCd">
+                        	AND A.SEX_GB = #searchGenderDivCd#
+                        </isNotEmpty>
+                        <isNotEmpty property="searchRrno">
+                        	AND A.REG_NO LIKE '%' || #searchRrno# || '%'
+						</isNotEmpty>
+	</select>
+	
+	
+	<!-- 평가위원 평가참여이력 상세내용을 조회한다. -->
+	<select id="kr.go.ntis.ev.hist.asesor.AsesorAssmtPrtcpHist.selectAsesorAssmtPrtcpHistInfo" resultClass="egovMap" parameterClass="asesorAssmtPrtcpHistVO">
+		SELECT      
+		     A.REG_NO AS RRNO
+		   , A.HM_NM  AS ASESOR_HM_NM
+		   , A.SEX_GB
+		   , FNC_GET_CMN_CD_NM('IA022',A.SEX_GB) AS SEX_GB_NM
+		   , A.BIRTH_YMD
+		   , A.CP
+		   , A.EMAIL                        
+		   , A.ORG_CLS
+		   , A.KOI_NO
+		FROM
+		    HURIMS_MAN.HURIMS_MAN_DATA A    
+		WHERE
+		    A.REG_NO = #rrno#
+	</select>
+	
+	
+	
+	
+	<!--  과거평가이력 -->
+	<select id="kr.go.ntis.ev.hist.asesor.AsesorAssmtPrtcpHist.selectStepByAsesorAssmtPrtcpHistList" resultClass="egovMap" parameterClass="asesorAssmtPrtcpHistVO">
+	
+		SELECT
+			  ROWNUM AS RN
+			, A.PJT_ID
+		    , A.PJT_PRFRM_ORG_NM
+		    , A.KOR_PJT_NM
+		    , A.MNGR_HM_NM
+		    , A.PJT_ASSMT_PRTCP_YM
+		    , A.RRNO
+		    , A.ASSMT_PHASE_CD
+		    , A.ASSMT_PHASE_CD_NM
+		FROM
+		(
+			SELECT
+			      B.PJT_ID
+			    , B.PJT_PRFRM_ORG_NM
+			    , B.KOR_PJT_NM
+			    , D.HM_NM AS MNGR_HM_NM
+			    <!-- , TO_CHAR(C.PJT_FINAL_ASSMT_DT, 'YYYY-MM-DD') AS PJT_FINAL_ASSMT_DT -->
+			    , SUBSTR(PJT_ASSMT_PRTCP_YM, 1, 4) || '-' || SUBSTR(PJT_ASSMT_PRTCP_YM, 5) AS PJT_ASSMT_PRTCP_YM
+			    , E.RRNO
+			    , E.ASSMT_PHASE_CD
+			    , (SELECT CD_NM FROM GLOBAL.TB_SYSTEM_CD WHERE GRP_CD = 'GT051' AND CD = E.ASSMT_PHASE_CD) AS ASSMT_PHASE_CD_NM
+			FROM
+			    GLOBAL.SH_PROG_INFO A,     /*  과제_사업정보 */
+			    GLOBAL.SH_PJT_MAIN B,      /* 과제_기본정보 */
+			    <!-- GLOBAL.SH_PJT_FNER C,      /* 과제최종평가결과 */ -->
+			    GLOBAL.SH_PRTCP_MP_INFO D, /* 참여인력정보 */    
+			    GLOBAL.SH_PJT_ASESOR E      /* 평가위원 */                     
+			WHERE
+			        A.SRC_ORG_ID = B.SRC_ORG_ID     /* 출처기관아이디 */
+			    AND A.BZ_ID      = B.BDGT_PROG_CD   /* 사업코드  */
+			    AND A.STAN_YR    = B.STAN_YR        /* 기준년도 */
+			    <!-- AND B.PJT_ID     = C.PJT_ID         /* 과제고유번호 */ -->
+			    AND B.PJT_ID     = D.PJT_ID         /* 과제고유번호 */
+			    AND B.PJT_ID     = E.PJT_ID         /* 과제고유번호 */
+			    AND A.DATA_MODIFY_SLCT != 'D'    
+			    AND D.ROLE_SLCT  = 'A'
+			    AND B.OP_CD = 'A'
+			    AND D.OP_CD = 'A'
+			    AND E.OP_CD = 'A'
+			    AND E.RRNO = #rrno#
+				<isNotEmpty property="searchAssmtPhaseCd">
+	            	AND E.ASSMT_PHASE_CD = #searchAssmtPhaseCd#
+				</isNotEmpty>			    
+			<isNotEmpty property="orderItem">
+				ORDER BY $orderItem$ $orderDivCd$
+			</isNotEmpty>
+		) A
+		ORDER BY RN ASC
+		
+	</select>
+	
+	
+	
+	
+	
+	
+
+
+		
+</sqlMap>
